@@ -1,1 +1,1 @@
-<h2 style="text-align:center">[My Developer Portfolio Page](http://roberte.me)</h2>
+<h1 style="text-align:center"><a href="http://roberte.me">My Developer Portfolio Page</a></h2>
