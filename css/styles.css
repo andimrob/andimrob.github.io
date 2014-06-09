@@ -64,14 +64,16 @@ section.content {
 
 .header-row {
   height: 550px;
-  padding-top: 200px; }
+  padding-top: 50px; }
   .header-row h1 {
+    font-family: 'Lato', sans-serif !important;
     color: rgba(255, 255, 255, 0) !important;
     text-align: center;
-    font-size: 400%;
+    font-size: 450%;
     transition: color 1.0s; }
   .header-row:hover h1 {
-    color: rgba(241, 244, 249, 0.8) !important; }
+    color: rgba(241, 244, 249, 0.9) !important;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
 
 .about-me-icons div {
   padding-left: 64px; }
