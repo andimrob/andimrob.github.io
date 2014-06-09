@@ -71,7 +71,7 @@ section.content {
     font-size: 400%;
     transition: color 1.0s; }
   .header-row:hover h1 {
-    color: white !important; }
+    color: rgba(241, 244, 249, 0.8) !important; }
 
 .about-me-icons div {
   padding-left: 64px; }
