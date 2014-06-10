@@ -86,3 +86,7 @@ section.content {
     position: absolute;
     top: 37px;
     left: 127px; }
+
+article {
+  font-size: 1.3em;
+  line-height: 1.2em; }
