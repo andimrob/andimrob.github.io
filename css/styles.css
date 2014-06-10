@@ -31,6 +31,9 @@ i.navicon {
     background: #f1f4f9;
     color: #333333; }
 
+.carousel div {
+  height: 100%;
+  width: 100%; }
 .carousel img {
   padding-top: 10px;
   height: 450px;
