@@ -1,0 +1,165 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>/// iamrobot ///</title>
+
+  <link rel="stylesheet" href="css/foundation.css" />
+  <link rel="stylesheet" href="css/font-awesome.css">
+  <link rel="stylesheet" type="text/css" href="slick/slick.css" />
+  <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script src="js/vendor/modernizr.js"></script>
+</head>
+<body>
+
+  <header data-type="background" data-speed="2">
+    <div class="row header-row">
+      <div class="large-7 large-centered column splash-text">
+        <h1>Hi, I'm Rob</h1><br>
+        <h1>I make web stuff</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="contain-to-grid sticky">
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Robert White</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon">
+          <a href="#"><i class="fa fa-bars navicon"></i></a>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li><a href="#about-me-section"><i class="fa fa-user" /></i> About Me</a></li>
+          <li><a href="#skills-section"><i class="fa fa-wrench" /></i> Skills</a></li>
+          <li><a href="#projects-section"><i class="fa fa-code" /></i> Projects</a><l/i>
+          <li><a href="#links-section"><i class="fa fa-link" /></i> Links</a></li>
+        </ul>
+      </section>
+    </nav>
+  </div>
+
+  <div class="row section-break top-section" id="about-me-section">
+    <div class="large-12 columns title-section"><h1>About Me</h1></div>
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="large-8 columns">
+        <article>
+          Hi, I'm Rob White and I am obsessed with all things technology.  I have worked in several capacities in technology from consumer sales, to desktop support, to datacenter infrastructure support, and my latest passion, web development.  As well I got my undergraduate degree in Electrical Engineering, so naturally I love to tinker with electronics on the side.
+          <br><br>
+          I like long walks in the park, Ruby on Rails, springtime, lurking in your source code on github, singing a juanty tune, developer tools in Chrome, flowers, discovering new JavaScript libraries, building new projects, learning new skills, and exploring around my new home-town, Brooklyn!
+        </article>
+      </div>
+      <div class="large-4 columns about-me-icons large-right">
+        <div><i class="fa fa-laptop"></i><i class="fa fa-terminal"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row section-break" id="skills-section">
+    <div class="large-12 columns title-section"><h1>Skills</h1></div>
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="large-4 columns skills">
+        <article>
+          <i class="fa fa-check"></i><br>
+          Ruby<br>
+          JavaScript<br>
+          PostgreSQL<br>
+          HTML5<br>
+          CSS3<br>
+          Sass<br>
+          Shell Script
+        </article>
+      </div>
+      <div class="large-4 columns skills">
+        <article>
+          <i class="fa fa-check"></i><br>
+          Rails<br>
+          Sinatra<br>
+          jQuery<br>
+          Underscore.js<br>
+          Backbone.js<br>
+          Foundation<br>
+          Heroku
+        </article>
+      </div>
+      <div class="large-4 columns skills">
+        <article>
+          <i class="fa fa-check"></i><br>
+          Git<br>
+          RSpec<br>
+          Jasmine<br>
+          Capybara<br>
+          TDD<br>
+          Pivotal Tracker<br>
+          Travis CI
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="row section-break" id="projects-section">
+    <div class="large-12 columns title-section"><h1>Projects</h1></div>
+  </div>
+  <section class="content">
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="carousel">
+          <div><a href="http://prowl-dev.herokuapp.com/"><img src="img/prowl.png"></a></div>
+          <div><a href="http://shuttlehub.herokuapp.com/"><img src="img/shuttlehub.png"></a></div>
+          <div><a href="http://audioavatar2.herokuapp.com/"><img src="img/audioavatar.png"></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row section-break" id="links-section">
+    <div class="large-12 columns title-section"><h1>Find me around the web</h1></div>
+  </div>
+  <section class="content">
+    <div class="row links-section">
+      <div class="large-7 columns large-centered">
+        <a href="https://linkedin.com/in/robertemerywhite">
+          <i class="fa fa-linkedin"></i>
+          linkedin.com/in/robertemerywhite
+        </a><br>
+        <a href="https://github.com/andimrob">
+          <i class="fa fa-github-alt"></i>
+          github.com/andimrob
+        </a><br>
+        <a href="mailto:robert@emerywhite.com" target="_top">
+          <i class="fa fa-envelope-o"></i>
+          robert@emerywhite.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="row">
+      <div class="large-12 columns">
+          <a href="#"><i class=""></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script type="text/javascript" src="slick/slick.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>
