@@ -1,30 +1,53 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 
-const Template = ({ data }) => {
-  const { markdownRemark } = data
-  const title = markdownRemark.frontmatter.title
-  const html = markdownRemark.html
+const BlogPostTemplate = ({ data, pageContext }) => {
+  const { prev, next } = pageContext
+  const post = data.markdownRemark
+  const { title, tags } = post.frontmatter
 
   return (
-    <>
-      <h1>{title}</h1>
-      <div className="blogPost"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </>
+    <article>
+      <header>
+        <h1>{title}</h1>
+        <div>
+          {tags.map(tagName => (
+            <Link to={`tags/${tagName}`}>
+              {tagName}
+            </Link>
+          ))}
+        </div>
+      </header>
+      <section>
+        <div className="blogPost"
+          dangerouslySetInnerHTML={{ __html: post.html }}
+        />
+      </section>
+      <footer>
+        {prev && <Link to={prev.frontmatter.path}>Prev</Link>}
+        {next && <Link to={next.frontmatter.path}>Next</Link>}
+      </footer>
+    </article>
   )
 }
 
-export const query = graphql`
+export const pageQuery = graphql`
   query($pathSlug: String!) {
-    markdownRemark(frontmatter: { path: $pathSlug }) {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+    markdownRemark(frontmatter: { path: { eq: $pathSlug } }) {
+      id
       html
       frontmatter {
+        date(formatString: "MMMM DD, YYYY")
+        tags
         title
       }
     }
   }
 `;
 
-export default Template;
+export default BlogPostTemplate;
