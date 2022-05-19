@@ -252,7 +252,9 @@ GEM
       activesupport (>= 3.0.0)
     minitest (5.15.0)
     multipart-post (2.1.1)
-    nokogiri (1.12.5-x86_64-darwin)
+    nokogiri (1.13.6-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
     octokit (4.21.0)
       faraday (>= 0.9)
@@ -306,6 +308,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   github-pages
