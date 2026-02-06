@@ -1,9 +1,13 @@
+import { useTextScramble } from "../hooks/useTextScramble";
+
 function Hero() {
+  const name = useTextScramble("Andi Robinson");
+
   return (
     <section className="hero">
       <div className="container">
         <p className="hero-greeting">Hello, I'm</p>
-        <h1 className="hero-name">Andi Robinson</h1>
+        <h1 className="hero-name">{name}</h1>
         <p className="hero-tagline">
           Software Developer &amp; Creative Problem Solver
         </p>
