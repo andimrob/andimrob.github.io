@@ -1,55 +1,102 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../hooks/useTheme";
+import { useActiveSection } from "../hooks/useActiveSection";
 
-const navItems = ["About", "Skills", "Projects", "Contact"];
+const sections = [
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
+];
+
+const sectionIds = sections.map((s) => s.id);
 
 function Header() {
-  const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const { theme, toggle } = useTheme();
+  const active = useActiveSection(sectionIds);
 
-  const close = useCallback(() => setOpen(false), []);
+  const navRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const underlineRef = useRef<HTMLSpanElement>(null);
+
+  const updateUnderline = useCallback(() => {
+    const container = navRef.current;
+    const link = linkRefs.current[active];
+    const bar = underlineRef.current;
+    if (!container || !link || !bar) return;
+
+    const cRect = container.getBoundingClientRect();
+    const lRect = link.getBoundingClientRect();
+    bar.style.left = `${lRect.left - cRect.left}px`;
+    bar.style.width = `${lRect.width}px`;
+  }, [active]);
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, close]);
+    updateUnderline();
+    window.addEventListener("resize", updateUnderline);
+    return () => window.removeEventListener("resize", updateUnderline);
+  }, [updateUnderline]);
+
+  const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
       <div className="prism-perspective mx-auto max-w-5xl">
-        {/* 3D Prism */}
         <div
-          className={`prism ${open ? "prism-open" : hovered ? "prism-peek" : ""}`}
-          onMouseEnter={() => {
-            if (!open) setHovered(true);
-          }}
+          className={`prism ${hovered ? "prism-peek" : ""}`}
+          onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onClick={() => {
-            if (!open) setOpen(true);
-          }}
         >
-          {/* Front Face — Black */}
-          <div className="prism-face prism-front flex items-center justify-between rounded-2xl bg-black px-6 shadow-2xl">
+          {/* Front Face — light in light mode, dark in dark mode */}
+          <div className="prism-face prism-front flex items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950">
             <a
               href="#"
-              className="text-lg font-bold tracking-tight text-white"
-              onClick={(e) => e.stopPropagation()}
+              className="text-lg font-bold tracking-tight text-gray-900 dark:text-white"
             >
               AR
             </a>
-            <div className="flex items-center gap-4">
+
+            <div className="flex items-center gap-5">
+              {/* Desktop nav links */}
+              <div
+                ref={navRef}
+                className="relative hidden items-center gap-6 sm:flex"
+              >
+                {sections.map((s) => (
+                  <a
+                    key={s.id}
+                    ref={(el) => {
+                      linkRefs.current[s.id] = el;
+                    }}
+                    href={`#${s.id}`}
+                    className={`pb-1 text-sm font-medium transition-colors ${
+                      active === s.id
+                        ? "text-gray-900 dark:text-white"
+                        : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                    }`}
+                  >
+                    {s.label}
+                  </a>
+                ))}
+                <span
+                  ref={underlineRef}
+                  className="absolute bottom-0 h-[2px] bg-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:bg-white"
+                />
+              </div>
+
+              {/* Mobile: current section label */}
+              <div className="relative sm:hidden">
+                <span className="pb-1 text-sm font-medium text-gray-900 dark:text-white">
+                  {activeLabel}
+                </span>
+                <span className="absolute -bottom-0.5 left-0 h-[2px] w-full bg-gray-900 dark:bg-white" />
+              </div>
+
+              {/* Theme toggle */}
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggle();
-                }}
+                onClick={toggle}
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                className="flex h-8 w-8 items-center justify-center text-white/60 transition-colors hover:text-white"
+                className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
               >
                 {theme === "dark" ? (
                   <svg
@@ -85,67 +132,15 @@ function Header() {
                   </svg>
                 )}
               </button>
-              <div className="flex w-6 flex-col gap-[5px]">
-                <span className="block h-[2px] w-full rounded-full bg-white" />
-                <span className="block h-[2px] w-full rounded-full bg-white" />
-                <span className="block h-[2px] w-full rounded-full bg-white" />
-              </div>
             </div>
           </div>
 
-          {/* Top Face — White */}
-          <div className="prism-face prism-top flex items-center justify-between rounded-2xl bg-white px-6 shadow-2xl">
-            <span className="text-sm font-bold tracking-[0.25em] uppercase text-black">
-              Menu
-            </span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                close();
-              }}
-              aria-label="Close menu"
-              className="flex h-8 w-8 items-center justify-center text-black/60 transition-colors hover:text-black"
-            >
-              <svg
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1={18} y1={6} x2={6} y2={18} />
-                <line x1={6} y1={6} x2={18} y2={18} />
-              </svg>
-            </button>
-          </div>
+          {/* Top Face — dark in light mode (peeks as contrast), light in dark mode */}
+          <div className="prism-face prism-top bg-gray-950 dark:bg-white" />
 
-          {/* Bottom Face — White */}
-          <div className="prism-face prism-bottom rounded-2xl bg-white" />
+          {/* Bottom Face — matches top */}
+          <div className="prism-face prism-bottom bg-gray-950 dark:bg-white" />
         </div>
-
-        {/* Navigation Panel */}
-        <nav
-          className={`mt-3 overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-            open
-              ? "max-h-80 translate-y-0 opacity-100"
-              : "pointer-events-none max-h-0 -translate-y-2 opacity-0"
-          }`}
-        >
-          {navItems.map((item, i) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={close}
-              className={`block px-6 py-4 text-[15px] font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-black ${
-                i < navItems.length - 1 ? "border-b border-gray-100" : ""
-              }`}
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
       </div>
     </div>
   );
