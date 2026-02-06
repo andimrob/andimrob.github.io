@@ -14,7 +14,7 @@ function RevealSection({ children, className = "", id }: Props) {
     <section
       ref={ref}
       id={id}
-      className={`section ${className} reveal ${visible ? "revealed" : ""}`}
+      className={`py-20 max-sm:py-14 ${className} reveal ${visible ? "revealed" : ""}`}
     >
       {children}
     </section>
