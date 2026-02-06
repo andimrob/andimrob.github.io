@@ -1,3 +1,5 @@
+import RevealSection from "./RevealSection";
+
 const skills = [
   { category: "Frontend", items: ["React", "TypeScript", "HTML/CSS", "Vite"] },
   { category: "Backend", items: ["Node.js", "Python", "REST APIs", "SQL"] },
@@ -13,7 +15,7 @@ const skills = [
 
 function Skills() {
   return (
-    <section id="skills" className="section skills">
+    <RevealSection id="skills" className="skills">
       <div className="container">
         <h2 className="section-title">Skills</h2>
         <div className="skills-grid">
@@ -29,7 +31,7 @@ function Skills() {
           ))}
         </div>
       </div>
-    </section>
+    </RevealSection>
   );
 }
 

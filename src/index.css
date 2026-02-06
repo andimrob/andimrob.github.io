@@ -289,14 +289,14 @@ img {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 2rem;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   background: var(--color-bg);
+  will-change: transform;
 }
 
 .project-card:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
 }
 
 .project-card h3 {
@@ -357,6 +357,20 @@ img {
 .footer p {
   font-size: 0.85rem;
   color: var(--color-text-muted);
+}
+
+/* ---- Scroll Reveal ---- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ---- Responsive ---- */

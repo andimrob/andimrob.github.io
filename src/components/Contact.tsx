@@ -1,6 +1,8 @@
+import RevealSection from "./RevealSection";
+
 function Contact() {
   return (
-    <section id="contact" className="section contact">
+    <RevealSection id="contact" className="contact">
       <div className="container">
         <h2 className="section-title">Get in Touch</h2>
         <p className="contact-text">
@@ -21,7 +23,7 @@ function Contact() {
           </a>
         </div>
       </div>
-    </section>
+    </RevealSection>
   );
 }
 
