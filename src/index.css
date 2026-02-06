@@ -8,7 +8,8 @@
   --color-primary-hover: #1d4ed8;
 }
 
-/* Scroll reveal — cannot be done with pure utilities */
+/* ---- Scroll Reveal ---- */
+
 .reveal {
   opacity: 0;
   transform: translateY(32px);
@@ -19,4 +20,45 @@
 .reveal.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ---- 3D Prism Nav ---- */
+
+.prism-perspective {
+  perspective: 1200px;
+}
+
+.prism {
+  --prism-h: 3.5rem;
+  position: relative;
+  height: var(--prism-h);
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  cursor: pointer;
+}
+
+.prism-peek {
+  transform: rotateX(-18deg);
+}
+
+.prism-open {
+  transform: rotateX(-90deg);
+}
+
+.prism-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.prism-front {
+  transform: translateZ(calc(var(--prism-h) / 2));
+}
+
+.prism-top {
+  transform: rotateX(90deg) translateZ(calc(var(--prism-h) / 2));
+}
+
+.prism-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--prism-h) / 2));
 }
