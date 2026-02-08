@@ -10,8 +10,21 @@ const sections = [
 
 const sectionIds = sections.map((s) => s.id);
 
+const quips = [
+  "\u{1F44B} Hey, you found the secret side!",
+  "\u{1F680} Nothing to see here\u{2026} or is there?",
+  "\u{1F914} You\u{2019}re the curious type, huh?",
+  "\u{2728} Achievement unlocked: bar flipper",
+  "\u{1F389} Surprise! Now flip me back, please",
+  "\u{1F60E} Cool devs click random things",
+  "\u{1F47E} Insert coin to continue",
+  "\u{1F525} You broke the nav. Just kidding.",
+];
+
 function Header() {
+  const [flipped, setFlipped] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [quip, setQuip] = useState(quips[0]);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
@@ -37,21 +50,36 @@ function Header() {
     return () => window.removeEventListener("resize", updateUnderline);
   }, [updateUnderline]);
 
+  const handleFlip = () => {
+    if (!flipped) {
+      setQuip(quips[Math.floor(Math.random() * quips.length)]);
+    }
+    setFlipped((f) => !f);
+  };
+
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
+
+  const prismClass = `prism ${flipped ? "prism-flipped" : hovered ? "prism-peek" : ""}`;
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
       <div className="prism-perspective mx-auto max-w-5xl">
         <div
-          className={`prism ${hovered ? "prism-peek" : ""}`}
-          onMouseEnter={() => setHovered(true)}
+          className={prismClass}
+          onMouseEnter={() => {
+            if (!flipped) setHovered(true);
+          }}
           onMouseLeave={() => setHovered(false)}
         >
-          {/* Front Face — light in light mode, dark in dark mode */}
-          <div className="prism-face prism-front flex items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950">
+          {/* Front Face */}
+          <div
+            className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950"
+            onClick={handleFlip}
+          >
             <a
               href="#"
               className="text-lg font-bold tracking-tight text-gray-900 dark:text-white"
+              onClick={(e) => e.stopPropagation()}
             >
               AR
             </a>
@@ -69,6 +97,7 @@ function Header() {
                       linkRefs.current[s.id] = el;
                     }}
                     href={`#${s.id}`}
+                    onClick={(e) => e.stopPropagation()}
                     className={`pb-1 text-sm font-medium transition-colors ${
                       active === s.id
                         ? "text-gray-900 dark:text-white"
@@ -94,7 +123,10 @@ function Header() {
 
               {/* Theme toggle */}
               <button
-                onClick={toggle}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggle();
+                }}
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
               >
@@ -135,10 +167,17 @@ function Header() {
             </div>
           </div>
 
-          {/* Top Face — dark in light mode (peeks as contrast), light in dark mode */}
-          <div className="prism-face prism-top bg-gray-950 dark:bg-white" />
+          {/* Top Face — Easter egg */}
+          <div
+            className="prism-face prism-top flex cursor-pointer items-center justify-center bg-gray-950 px-6 dark:bg-white"
+            onClick={handleFlip}
+          >
+            <span className="text-sm font-medium text-white dark:text-gray-900">
+              {quip}
+            </span>
+          </div>
 
-          {/* Bottom Face — matches top */}
+          {/* Bottom Face */}
           <div className="prism-face prism-bottom bg-gray-950 dark:bg-white" />
         </div>
       </div>

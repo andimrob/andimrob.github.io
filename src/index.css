@@ -40,6 +40,10 @@
   transform: rotateX(-18deg);
 }
 
+.prism-flipped {
+  transform: rotateX(-90deg);
+}
+
 .prism-face {
   position: absolute;
   inset: 0;
