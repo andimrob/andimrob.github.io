@@ -3,7 +3,7 @@ import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { fireConfetti } from "../confetti";
 import { fireCoinCollect } from "../coinCollect";
-import { firePixelExplosion } from "../pixelExplosion";
+import { firePaperLamp } from "../paperLamp";
 
 const sections = [
   { id: "about", label: "About" },
@@ -24,7 +24,7 @@ const quips = [
 ];
 
 const ACHIEVEMENT_QUIP = "\u{1F3C6} Achievement unlocked: bar flipper!";
-const PIXEL_QUIP = "\u{1F4A5} You broke it! (not really)";
+const LAMP_QUIP = "\u{1F3EE} Warm glow, warm heart";
 
 function Header() {
   const [flipped, setFlipped] = useState(false);
@@ -35,6 +35,7 @@ function Header() {
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
+  const prismRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
@@ -68,8 +69,8 @@ function Header() {
         setQuip(ACHIEVEMENT_QUIP);
         fireConfetti();
       } else if (count === 10) {
-        setQuip(PIXEL_QUIP);
-        firePixelExplosion();
+        setQuip(LAMP_QUIP);
+        if (prismRef.current) firePaperLamp(prismRef.current);
       } else {
         setQuip(quips[Math.floor(Math.random() * quips.length)]);
         fireCoinCollect();
@@ -95,6 +96,7 @@ function Header() {
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
       <div className="prism-perspective mx-auto max-w-5xl">
         <div
+          ref={prismRef}
           className={prismClass}
           onMouseEnter={() => {
             if (!flipped) setHovered(true);
