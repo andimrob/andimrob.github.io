@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { fireConfetti } from "../confetti";
 
 const sections = [
   { id: "about", label: "About" },
@@ -14,12 +15,13 @@ const quips = [
   "\u{1F44B} Hey, you found the secret side!",
   "\u{1F680} Nothing to see here\u{2026} or is there?",
   "\u{1F914} You\u{2019}re the curious type, huh?",
-  "\u{2728} Achievement unlocked: bar flipper",
   "\u{1F389} Surprise! Now flip me back, please",
   "\u{1F60E} Cool devs click random things",
   "\u{1F47E} Insert coin to continue",
   "\u{1F525} You broke the nav. Just kidding.",
 ];
+
+const ACHIEVEMENT_QUIP = "\u{1F3C6} Achievement unlocked: bar flipper!";
 
 function Header() {
   const [flipped, setFlipped] = useState(false);
@@ -28,6 +30,7 @@ function Header() {
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
+  const flipCount = useRef(0);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
@@ -52,7 +55,13 @@ function Header() {
 
   const handleFlip = () => {
     if (!flipped) {
-      setQuip(quips[Math.floor(Math.random() * quips.length)]);
+      flipCount.current++;
+      if (flipCount.current === 5) {
+        setQuip(ACHIEVEMENT_QUIP);
+        fireConfetti();
+      } else {
+        setQuip(quips[Math.floor(Math.random() * quips.length)]);
+      }
     }
     setFlipped((f) => !f);
   };
