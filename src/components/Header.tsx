@@ -51,12 +51,15 @@ function Header() {
   const [flipped, setFlipped] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [jitter, setJitter] = useState(false);
+  const [idlePeek, setIdlePeek] = useState(false);
   const [quip, setQuip] = useState<ReactNode>(quips[0]);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
+  const hasInteracted = useRef(false);
+  const idlePeekTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
@@ -80,6 +83,9 @@ function Header() {
   }, [updateUnderline]);
 
   const handleFlip = (e: React.MouseEvent) => {
+    hasInteracted.current = true;
+    setIdlePeek(false);
+
     // Quick jitter on every click
     setJitter(false);
     requestAnimationFrame(() => setJitter(true));
@@ -106,16 +112,23 @@ function Header() {
     setFlipped((f) => !f);
   };
 
-  // Clean up timer on unmount
+  // Idle peek: briefly tilt down after 3s if no interaction
   useEffect(() => {
+    idlePeekTimer.current = setTimeout(() => {
+      if (!hasInteracted.current) {
+        setIdlePeek(true);
+        setTimeout(() => setIdlePeek(false), 800);
+      }
+    }, 3000);
     return () => {
+      if (idlePeekTimer.current) clearTimeout(idlePeekTimer.current);
       if (autoFlipTimer.current) clearTimeout(autoFlipTimer.current);
     };
   }, []);
 
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
-  const prismClass = `prism ${flipped ? "prism-flipped" : hovered ? "prism-peek" : ""}`;
+  const prismClass = `prism ${flipped ? "prism-flipped" : hovered || idlePeek ? "prism-peek" : ""}`;
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
@@ -126,6 +139,8 @@ function Header() {
         <div
           className={prismClass}
           onMouseEnter={() => {
+            hasInteracted.current = true;
+            setIdlePeek(false);
             if (!flipped) setHovered(true);
           }}
           onMouseLeave={() => setHovered(false)}
