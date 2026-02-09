@@ -3,7 +3,6 @@ import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { fireConfetti } from "../confetti";
 import { fireCoinCollect } from "../coinCollect";
-import { firePaperLamp } from "../paperLamp";
 
 const sections = [
   { id: "about", label: "About" },
@@ -35,7 +34,7 @@ const quips: ReactNode[] = [
   <>{"\u{1F3B5}"} Feeling adventurous? {link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Click here for a surprise")}</>,
   "\u{1F355} You\u{2019}ve earned a mass-produced pizza. Not really",
   "\u{26A0}\u{FE0F} Warning: excessive flipping may cause mild satisfaction",
-  "\u{1F3EE} Warm glow, warm heart",
+  "\u{1F389} Double digits! You\u{2019}re officially dedicated",
   <>{"\u{1F30A}"} Need a break? {link("https://fallingfalling.com", "Just keep falling")}</>,
   "\u{1F916} Beep boop. The nav bar is sentient now",
   <>{"\u{1F5A5}\u{FE0F}"} Hack the planet: {link("https://hackertyper.net", "hackertyper.net")}</>,
@@ -58,7 +57,6 @@ function Header() {
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
-  const prismRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
@@ -99,8 +97,6 @@ function Header() {
       // Milestone effects
       if (count === 5) {
         fireConfetti();
-      } else if (count === 10) {
-        if (prismRef.current) firePaperLamp(prismRef.current);
       } else {
         fireCoinCollect(e.clientX, e.clientY);
       }
@@ -128,7 +124,6 @@ function Header() {
           onAnimationEnd={() => setJitter(false)}
         >
         <div
-          ref={prismRef}
           className={prismClass}
           onMouseEnter={() => {
             if (!flipped) setHovered(true);
