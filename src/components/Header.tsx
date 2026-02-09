@@ -31,8 +31,8 @@ const quips: ReactNode[] = [
   "\u{1F47E} Insert coin to continue\u2026",
   "\u{1F3C6} Achievement unlocked: bar flipper!",
   "\u{1F60E} Okay you\u2019re committed. I respect that",
-  <>{"\u{1F3B5}"} Feeling adventurous? {link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Click here for a surprise")}</>,
   "\u{1F355} You\u2019ve earned a mass-produced pizza. Not really",
+  "\u{1F4AD} I wonder what the next one says\u2026",
   "\u{26A0}\u{FE0F} Warning: excessive flipping may cause mild satisfaction",
   "\u{1F389} Double digits! You\u2019re officially dedicated",
   <>{"\u{1F30A}"} You look tense. Maybe {link("https://fallingfalling.com", "just let go")}?</>,
@@ -45,6 +45,7 @@ const quips: ReactNode[] = [
   "\u{1F409} Here be dragons. And also nav links",
   <>{"\u{2728}"} The old internet was {link("https://www.cameronsworld.net", "absolutely unhinged")}</>,
   <>{"\u{1F6B8}"} Don{"\u2019"}t shake {link("https://staggeringbeauty.com", "this little guy")}. Or do.</>,
+  <>{"\u{1F381}"} You made it to 21. Here{"\u2019"}s {link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "your reward")}</>,
 ];
 
 function Header() {
