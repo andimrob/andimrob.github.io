@@ -34,6 +34,7 @@ function Header() {
   const active = useActiveSection(sectionIds);
 
   const flipCount = useRef(0);
+  const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
@@ -57,6 +58,9 @@ function Header() {
   }, [updateUnderline]);
 
   const handleFlip = () => {
+    // Clear any pending auto-rotate
+    if (autoFlipTimer.current) clearTimeout(autoFlipTimer.current);
+
     if (!flipped) {
       flipCount.current++;
       const count = flipCount.current;
@@ -70,9 +74,18 @@ function Header() {
         setQuip(quips[Math.floor(Math.random() * quips.length)]);
         fireCoinCollect();
       }
+      // Auto-rotate back after 2 seconds
+      autoFlipTimer.current = setTimeout(() => setFlipped(false), 2000);
     }
     setFlipped((f) => !f);
   };
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (autoFlipTimer.current) clearTimeout(autoFlipTimer.current);
+    };
+  }, []);
 
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
