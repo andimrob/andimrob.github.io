@@ -3,6 +3,7 @@ import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { fireConfetti } from "../confetti";
 import { fireCoinCollect } from "../coinCollect";
+import { firePixelExplosion } from "../pixelExplosion";
 
 const sections = [
   { id: "about", label: "About" },
@@ -23,6 +24,7 @@ const quips = [
 ];
 
 const ACHIEVEMENT_QUIP = "\u{1F3C6} Achievement unlocked: bar flipper!";
+const PIXEL_QUIP = "\u{1F4A5} You broke it! (not really)";
 
 function Header() {
   const [flipped, setFlipped] = useState(false);
@@ -61,11 +63,12 @@ function Header() {
       if (count === 5) {
         setQuip(ACHIEVEMENT_QUIP);
         fireConfetti();
+      } else if (count === 10) {
+        setQuip(PIXEL_QUIP);
+        firePixelExplosion();
       } else {
         setQuip(quips[Math.floor(Math.random() * quips.length)]);
-        if (count < 5 || (count > 5 && count < 10)) {
-          fireCoinCollect();
-        }
+        fireCoinCollect();
       }
     }
     setFlipped((f) => !f);
