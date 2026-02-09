@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type ReactNode } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { fireConfetti } from "../confetti";
@@ -13,24 +13,46 @@ const sections = [
 
 const sectionIds = sections.map((s) => s.id);
 
-const quips = [
-  "\u{1F44B} Hey, you found the secret side!",
-  "\u{1F680} Nothing to see here\u{2026} or is there?",
-  "\u{1F914} You\u{2019}re the curious type, huh?",
-  "\u{1F389} Surprise! Now flip me back, please",
-  "\u{1F60E} Cool devs click random things",
-  "\u{1F47E} Insert coin to continue",
-  "\u{1F525} You broke the nav. Just kidding.",
-];
+const link = (href: string, text: string) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="underline decoration-dotted underline-offset-2 hover:opacity-70"
+  >
+    {text}
+  </a>
+);
 
-const ACHIEVEMENT_QUIP = "\u{1F3C6} Achievement unlocked: bar flipper!";
-const LAMP_QUIP = "\u{1F3EE} Warm glow, warm heart";
+const quips: ReactNode[] = [
+  "\u{1F44B} Hey, you found the secret side!",
+  "\u{1F914} You\u{2019}re the curious type, huh?",
+  <>{"\u{1F4A4}"} This does nothing productive. Try {link("https://fallingfalling.com", "this")} instead</>,
+  "\u{1F47E} Insert coin to continue\u{2026}",
+  "\u{1F3C6} Achievement unlocked: bar flipper!",
+  "\u{1F60E} Okay you\u{2019}re committed. I respect that",
+  <>{"\u{1F3B5}"} Feeling adventurous? {link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Click here for a surprise")}</>,
+  "\u{1F355} You\u{2019}ve earned a mass-produced pizza. Not really",
+  "\u{26A0}\u{FE0F} Warning: excessive flipping may cause mild satisfaction",
+  "\u{1F3EE} Warm glow, warm heart",
+  <>{"\u{1F30A}"} Need a break? {link("https://fallingfalling.com", "Just keep falling")}</>,
+  "\u{1F916} Beep boop. The nav bar is sentient now",
+  <>{"\u{1F5A5}\u{FE0F}"} Hack the planet: {link("https://hackertyper.net", "hackertyper.net")}</>,
+  "\u{1F423} A wild easter egg appeared!",
+  <>{"\u{1F30D}"} Explore a building: {link("https://floor796.com", "floor796.com")}</>,
+  "\u{1F52E} The nav bar predicts\u{2026} you\u{2019}ll click again",
+  <>{"\u{1F4BE}"} Boot up nostalgia: {link("https://win32.run", "win32.run")}</>,
+  "\u{1F409} Here be dragons. And also nav links",
+  <>{"\u{2728}"} Visit the old web: {link("https://www.cameronsworld.net", "cameronsworld.net")}</>,
+  <>{"\u{1F6B8}"} Careful! You might enjoy {link("https://staggeringbeauty.com", "staggeringbeauty.com")}</>,
+];
 
 function Header() {
   const [flipped, setFlipped] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [jitter, setJitter] = useState(false);
-  const [quip, setQuip] = useState(quips[0]);
+  const [quip, setQuip] = useState<ReactNode>(quips[0]);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
@@ -70,14 +92,16 @@ function Header() {
     if (!flipped) {
       flipCount.current++;
       const count = flipCount.current;
+      // Pick quip: ordered for first 20, then cycle from the end
+      const idx = count <= quips.length ? count - 1 : ((count - 1) % quips.length);
+      setQuip(quips[idx]);
+
+      // Milestone effects
       if (count === 5) {
-        setQuip(ACHIEVEMENT_QUIP);
         fireConfetti();
       } else if (count === 10) {
-        setQuip(LAMP_QUIP);
         if (prismRef.current) firePaperLamp(prismRef.current);
       } else {
-        setQuip(quips[Math.floor(Math.random() * quips.length)]);
         fireCoinCollect(e.clientX, e.clientY);
       }
       // Auto-rotate back after 2 seconds
