@@ -51,15 +51,12 @@ const quips: ReactNode[] = [
 function Header() {
   const [flipped, setFlipped] = useState(false);
   const [jitter, setJitter] = useState(false);
-  const [idlePeek, setIdlePeek] = useState(false);
   const [quip, setQuip] = useState<ReactNode>(quips[0]);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
-  const hasInteracted = useRef(false);
-  const idlePeekTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const prismRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
@@ -84,9 +81,6 @@ function Header() {
   }, [updateUnderline]);
 
   const handleFlip = (e: React.MouseEvent) => {
-    hasInteracted.current = true;
-    setIdlePeek(false);
-
     // Clear magnetic tilt so CSS class transform takes over
     if (prismRef.current) prismRef.current.style.transform = "";
 
@@ -161,23 +155,16 @@ function Header() {
     };
   }, [flipped]);
 
-  // Idle peek: briefly tilt down after 3s if no interaction
+  // Clean up auto-flip timer on unmount
   useEffect(() => {
-    idlePeekTimer.current = setTimeout(() => {
-      if (!hasInteracted.current) {
-        setIdlePeek(true);
-        setTimeout(() => setIdlePeek(false), 800);
-      }
-    }, 3000);
     return () => {
-      if (idlePeekTimer.current) clearTimeout(idlePeekTimer.current);
       if (autoFlipTimer.current) clearTimeout(autoFlipTimer.current);
     };
   }, []);
 
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
-  const prismClass = `prism ${flipped ? "prism-flipped" : idlePeek ? "prism-peek" : ""}`;
+  const prismClass = `prism ${flipped ? "prism-flipped" : ""}`;
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
@@ -188,10 +175,6 @@ function Header() {
         <div
           ref={prismRef}
           className={prismClass}
-          onMouseEnter={() => {
-            hasInteracted.current = true;
-            setIdlePeek(false);
-          }}
         >
           {/* Front Face */}
           <div
