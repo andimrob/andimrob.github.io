@@ -114,7 +114,10 @@ function Header() {
       } else {
         fireCoinCollect(coinX, coinY);
       }
-      autoFlipTimer.current = setTimeout(() => setFlipped(false), 1000);
+      autoFlipTimer.current = setTimeout(() => {
+        setFlipped(false);
+        setHovered(false); // Reset hover (mobile never fires mouseleave)
+      }, 1000);
     }
     setFlipped((f) => !f);
   };
