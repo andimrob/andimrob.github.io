@@ -59,7 +59,7 @@ function Header() {
     return () => window.removeEventListener("resize", updateUnderline);
   }, [updateUnderline]);
 
-  const handleFlip = () => {
+  const handleFlip = (e: React.MouseEvent) => {
     // Quick jitter on every click
     setJitter(false);
     requestAnimationFrame(() => setJitter(true));
@@ -78,7 +78,7 @@ function Header() {
         if (prismRef.current) firePaperLamp(prismRef.current);
       } else {
         setQuip(quips[Math.floor(Math.random() * quips.length)]);
-        fireCoinCollect();
+        fireCoinCollect(e.clientX, e.clientY);
       }
       // Auto-rotate back after 2 seconds
       autoFlipTimer.current = setTimeout(() => setFlipped(false), 2000);
