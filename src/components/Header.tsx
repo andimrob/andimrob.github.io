@@ -26,25 +26,25 @@ const link = (href: string, text: string) => (
 
 const quips: ReactNode[] = [
   "\u{1F44B} Hey, you found the secret side!",
-  "\u{1F914} You\u{2019}re the curious type, huh?",
+  "\u{1F914} You\u2019re the curious type, huh?",
   <>{"\u{1F4A4}"} This does nothing productive. Try {link("https://fallingfalling.com", "this")} instead</>,
-  "\u{1F47E} Insert coin to continue\u{2026}",
+  "\u{1F47E} Insert coin to continue\u2026",
   "\u{1F3C6} Achievement unlocked: bar flipper!",
-  "\u{1F60E} Okay you\u{2019}re committed. I respect that",
+  "\u{1F60E} Okay you\u2019re committed. I respect that",
   <>{"\u{1F3B5}"} Feeling adventurous? {link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Click here for a surprise")}</>,
-  "\u{1F355} You\u{2019}ve earned a mass-produced pizza. Not really",
+  "\u{1F355} You\u2019ve earned a mass-produced pizza. Not really",
   "\u{26A0}\u{FE0F} Warning: excessive flipping may cause mild satisfaction",
-  "\u{1F389} Double digits! You\u{2019}re officially dedicated",
+  "\u{1F389} Double digits! You\u2019re officially dedicated",
   <>{"\u{1F30A}"} You look tense. Maybe {link("https://fallingfalling.com", "just let go")}?</>,
   "\u{1F916} Beep boop. The nav bar is sentient now",
   <>{"\u{1F5A5}\u{FE0F}"} Ever wanted to {link("https://hackertyper.net", "feel like a hacker")}?</>,
   "\u{1F423} A wild easter egg appeared!",
-  <>{"\u{1F30D}"} There\u{2019}s a whole {link("https://floor796.com", "world in one building")}</>,
-  "\u{1F52E} The nav bar predicts\u{2026} you\u{2019}ll click again",
+  <>{"\u{1F30D}"} There{"\u2019"}s a whole {link("https://floor796.com", "world in one building")}</>,
+  "\u{1F52E} The nav bar predicts\u2026 you\u2019ll click again",
   <>{"\u{1F4BE}"} Miss the 90s? {link("https://win32.run", "Boot up some memories")}</>,
   "\u{1F409} Here be dragons. And also nav links",
   <>{"\u{2728}"} The old internet was {link("https://www.cameronsworld.net", "absolutely unhinged")}</>,
-  <>{"\u{1F6B8}"} Don\u{2019}t shake {link("https://staggeringbeauty.com", "this little guy")}. Or do.</>,
+  <>{"\u{1F6B8}"} Don{"\u2019"}t shake {link("https://staggeringbeauty.com", "this little guy")}. Or do.</>,
 ];
 
 function Header() {
