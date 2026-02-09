@@ -1,16 +1,15 @@
 /**
- * Coin-collect effect: a spinning gold coin pops out of the nav bar
- * with a Mario-style "+1" that floats upward and fades out.
+ * Coin-collect effect: a spinning gold coin pops out from the click
+ * position with a Mario-style "+1" that floats upward and fades out.
  */
-export function fireCoinCollect() {
+export function fireCoinCollect(x: number, y: number) {
   const wrapper = document.createElement("div");
   wrapper.style.cssText =
     "position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;overflow:hidden";
   document.body.appendChild(wrapper);
 
-  // Position coin roughly at center-top where the nav bar lives
-  const coinX = window.innerWidth / 2;
-  const coinStartY = 48;
+  const coinX = x;
+  const coinStartY = y;
 
   // --- Coin element ---
   const coin = document.createElement("div");
