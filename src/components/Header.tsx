@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { fireConfetti } from "../confetti";
+import { fireCoinCollect } from "../coinCollect";
 
 const sections = [
   { id: "about", label: "About" },
@@ -56,11 +57,15 @@ function Header() {
   const handleFlip = () => {
     if (!flipped) {
       flipCount.current++;
-      if (flipCount.current === 5) {
+      const count = flipCount.current;
+      if (count === 5) {
         setQuip(ACHIEVEMENT_QUIP);
         fireConfetti();
       } else {
         setQuip(quips[Math.floor(Math.random() * quips.length)]);
+        if (count < 5 || (count > 5 && count < 10)) {
+          fireCoinCollect();
+        }
       }
     }
     setFlipped((f) => !f);
