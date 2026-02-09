@@ -60,9 +60,18 @@ function Header() {
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const hasInteracted = useRef(false);
   const idlePeekTimer = useRef<ReturnType<typeof setTimeout>>(null);
+  const prismRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const underlineRef = useRef<HTMLSpanElement>(null);
+
+  // Drag-to-flip state
+  const dragStartY = useRef(0);
+  const dragStartX = useRef(0);
+  const isDragging = useRef(false);
+  const dragTriggered = useRef(false);
+  const suppressClick = useRef(false);
+  const DRAG_THRESHOLD = 60; // pixels of drag to trigger full flip
 
   const updateUnderline = useCallback(() => {
     const container = navRef.current;
@@ -82,11 +91,12 @@ function Header() {
     return () => window.removeEventListener("resize", updateUnderline);
   }, [updateUnderline]);
 
-  const handleFlip = (e: React.MouseEvent) => {
+  // Core flip logic shared by click and drag
+  const triggerFlip = (coinX: number, coinY: number) => {
     hasInteracted.current = true;
     setIdlePeek(false);
 
-    // Quick jitter on every click
+    // Quick jitter
     setJitter(false);
     requestAnimationFrame(() => setJitter(true));
 
@@ -96,21 +106,88 @@ function Header() {
     if (!flipped) {
       flipCount.current++;
       const count = flipCount.current;
-      // Pick quip: ordered for first 20, then cycle from the end
       const idx = count <= quips.length ? count - 1 : ((count - 1) % quips.length);
       setQuip(quips[idx]);
 
-      // Milestone effects
       if (count === 5) {
         fireConfetti();
       } else {
-        fireCoinCollect(e.clientX, e.clientY);
+        fireCoinCollect(coinX, coinY);
       }
-      // Auto-rotate back after 1 second
       autoFlipTimer.current = setTimeout(() => setFlipped(false), 1000);
     }
     setFlipped((f) => !f);
   };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (suppressClick.current) {
+      suppressClick.current = false;
+      return;
+    }
+    triggerFlip(e.clientX, e.clientY);
+  };
+
+  // --- Drag-to-flip handlers ---
+  const handleDragStart = (e: React.MouseEvent) => {
+    // Don't start drag on interactive children (links, buttons)
+    if ((e.target as HTMLElement).closest("a, button")) return;
+    if (flipped) return;
+
+    dragStartY.current = e.clientY;
+    dragStartX.current = e.clientX;
+    isDragging.current = true;
+    dragTriggered.current = false;
+    suppressClick.current = false;
+
+    // Disable CSS transition for immediate response
+    prismRef.current?.classList.add("prism-dragging");
+  };
+
+  useEffect(() => {
+    const handleDragMove = (e: MouseEvent) => {
+      if (!isDragging.current || dragTriggered.current) return;
+
+      const deltaY = e.clientY - dragStartY.current;
+      if (deltaY <= 2) return; // Only drag downward
+
+      suppressClick.current = true;
+
+      // Map drag distance to angle (0 to -90)
+      const angle = Math.min(90, (deltaY / DRAG_THRESHOLD) * 90);
+      if (prismRef.current) {
+        prismRef.current.style.transform = `rotateX(${-angle}deg)`;
+      }
+
+      // Trigger when threshold reached
+      if (deltaY >= DRAG_THRESHOLD) {
+        dragTriggered.current = true;
+        isDragging.current = false;
+
+        // Re-enable transition and let CSS class take over
+        prismRef.current?.classList.remove("prism-dragging");
+        if (prismRef.current) prismRef.current.style.transform = "";
+
+        triggerFlip(dragStartX.current, dragStartY.current);
+      }
+    };
+
+    const handleDragEnd = () => {
+      if (!isDragging.current) return;
+      isDragging.current = false;
+
+      // Snap back with transition
+      prismRef.current?.classList.remove("prism-dragging");
+      if (prismRef.current) prismRef.current.style.transform = "";
+    };
+
+    window.addEventListener("mousemove", handleDragMove);
+    window.addEventListener("mouseup", handleDragEnd);
+    return () => {
+      window.removeEventListener("mousemove", handleDragMove);
+      window.removeEventListener("mouseup", handleDragEnd);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flipped]);
 
   // Idle peek: briefly tilt down after 3s if no interaction
   useEffect(() => {
@@ -137,6 +214,7 @@ function Header() {
           onAnimationEnd={() => setJitter(false)}
         >
         <div
+          ref={prismRef}
           className={prismClass}
           onMouseEnter={() => {
             hasInteracted.current = true;
@@ -148,7 +226,8 @@ function Header() {
           {/* Front Face */}
           <div
             className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950"
-            onClick={handleFlip}
+            onClick={handleClick}
+            onMouseDown={handleDragStart}
           >
             <a
               href="#"
@@ -244,7 +323,7 @@ function Header() {
           {/* Top Face — Easter egg */}
           <div
             className="prism-face prism-top flex cursor-pointer items-center justify-center bg-gray-950 px-6 dark:bg-white"
-            onClick={handleFlip}
+            onClick={handleClick}
           >
             <span className="text-sm font-medium text-white dark:text-gray-900">
               {quip}
