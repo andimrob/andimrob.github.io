@@ -50,7 +50,6 @@ const quips: ReactNode[] = [
 
 function Header() {
   const [flipped, setFlipped] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const [jitter, setJitter] = useState(false);
   const [idlePeek, setIdlePeek] = useState(false);
   const [quip, setQuip] = useState<ReactNode>(quips[0]);
@@ -88,6 +87,9 @@ function Header() {
     hasInteracted.current = true;
     setIdlePeek(false);
 
+    // Clear magnetic tilt so CSS class transform takes over
+    if (prismRef.current) prismRef.current.style.transform = "";
+
     // Quick jitter
     setJitter(false);
     requestAnimationFrame(() => setJitter(true));
@@ -106,13 +108,58 @@ function Header() {
       } else {
         fireCoinCollect(e.clientX, e.clientY);
       }
-      autoFlipTimer.current = setTimeout(() => {
-        setFlipped(false);
-        setHovered(false);
-      }, 1000);
+      autoFlipTimer.current = setTimeout(() => setFlipped(false), 1000);
     }
     setFlipped((f) => !f);
   };
+
+  // Magnetic cursor-tracking tilt
+  useEffect(() => {
+    const MAX_TILT_X = 15; // max rotateX degrees
+    const MAX_TILT_Y = 8;  // max rotateY degrees
+    const ATTRACT_RANGE = 200; // px from navbar center where effect is active
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const el = prismRef.current;
+      if (!el || flipped) {
+        if (el) el.style.transform = "";
+        return;
+      }
+
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const dx = e.clientX - centerX;
+      const dy = e.clientY - centerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist > ATTRACT_RANGE) {
+        el.style.transform = "";
+        return;
+      }
+
+      // Strength falls off with distance (1 at center, 0 at range edge)
+      const strength = 1 - dist / ATTRACT_RANGE;
+      // Cursor below = tilt forward (negative rotateX), above = tilt back
+      const tiltX = -(dy / ATTRACT_RANGE) * MAX_TILT_X * strength;
+      // Cursor right = tilt left (positive rotateY), left = tilt right
+      const tiltY = (dx / ATTRACT_RANGE) * MAX_TILT_Y * strength;
+
+      el.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+    };
+
+    const handleMouseLeave = () => {
+      if (prismRef.current) prismRef.current.style.transform = "";
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [flipped]);
 
   // Idle peek: briefly tilt down after 3s if no interaction
   useEffect(() => {
@@ -130,7 +177,7 @@ function Header() {
 
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
-  const prismClass = `prism ${flipped ? "prism-flipped" : hovered || idlePeek ? "prism-peek" : ""}`;
+  const prismClass = `prism ${flipped ? "prism-flipped" : idlePeek ? "prism-peek" : ""}`;
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
@@ -144,9 +191,7 @@ function Header() {
           onMouseEnter={() => {
             hasInteracted.current = true;
             setIdlePeek(false);
-            if (!flipped) setHovered(true);
           }}
-          onMouseLeave={() => setHovered(false)}
         >
           {/* Front Face */}
           <div
