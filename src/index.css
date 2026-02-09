@@ -61,3 +61,19 @@
 .prism-bottom {
   transform: rotateX(-90deg) translateZ(calc(var(--prism-h) / 2));
 }
+
+/* ---- Nav Jitter ---- */
+
+@keyframes nav-jitter {
+  0% { transform: translate(0, 0); }
+  15% { transform: translate(-2px, 1px); }
+  30% { transform: translate(2px, -1px); }
+  45% { transform: translate(-1px, -2px); }
+  60% { transform: translate(1px, 2px); }
+  75% { transform: translate(-1px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.prism-jitter {
+  animation: nav-jitter 0.25s ease-out;
+}

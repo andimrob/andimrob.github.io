@@ -29,6 +29,7 @@ const LAMP_QUIP = "\u{1F3EE} Warm glow, warm heart";
 function Header() {
   const [flipped, setFlipped] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [jitter, setJitter] = useState(false);
   const [quip, setQuip] = useState(quips[0]);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
@@ -59,6 +60,10 @@ function Header() {
   }, [updateUnderline]);
 
   const handleFlip = () => {
+    // Quick jitter on every click
+    setJitter(false);
+    requestAnimationFrame(() => setJitter(true));
+
     // Clear any pending auto-rotate
     if (autoFlipTimer.current) clearTimeout(autoFlipTimer.current);
 
@@ -94,7 +99,10 @@ function Header() {
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
-      <div className="prism-perspective mx-auto max-w-5xl">
+      <div
+          className={`prism-perspective mx-auto max-w-5xl ${jitter ? "prism-jitter" : ""}`}
+          onAnimationEnd={() => setJitter(false)}
+        >
         <div
           ref={prismRef}
           className={prismClass}
