@@ -33,15 +33,17 @@
   position: relative;
   height: var(--prism-h);
   transform-style: preserve-3d;
-  transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 0.1s ease-out;
 }
 
 .prism-peek {
   transform: rotateX(-18deg);
+  transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .prism-flipped {
   transform: rotateX(-90deg);
+  transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .prism-face {
