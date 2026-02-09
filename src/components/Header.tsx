@@ -106,8 +106,8 @@ function Header() {
       } else {
         fireCoinCollect(e.clientX, e.clientY);
       }
-      // Auto-rotate back after 2 seconds
-      autoFlipTimer.current = setTimeout(() => setFlipped(false), 2000);
+      // Auto-rotate back after 1 second
+      autoFlipTimer.current = setTimeout(() => setFlipped(false), 1000);
     }
     setFlipped((f) => !f);
   };
