@@ -59,6 +59,93 @@
   transform: rotateX(-90deg) translateZ(calc(var(--prism-h) / 2));
 }
 
+/* ---- Top Face Background Treatments ---- */
+
+/* Deep Space — dark cosmic gradient */
+.prism-bg-deepspace {
+  background: linear-gradient(135deg, #0a0015, #1a0a3e, #0d1b2a, #1a0a3e, #0a0015);
+  background-size: 300% 100%;
+  animation: deepspace-drift 6s ease infinite;
+}
+@keyframes deepspace-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Vaporwave — pink/cyan retro gradient */
+.prism-bg-vaporwave {
+  background: linear-gradient(135deg, #ff71ce, #b967ff, #01cdfe, #05ffa1);
+  background-size: 300% 300%;
+  animation: vaporwave-shift 4s ease infinite;
+}
+@keyframes vaporwave-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Ocean — deep sea gradient */
+.prism-bg-ocean {
+  background: linear-gradient(135deg, #0a1628, #0e4d64, #0ea5e9, #0e4d64, #0a1628);
+  background-size: 300% 100%;
+  animation: ocean-swell 4s ease infinite;
+}
+@keyframes ocean-swell {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Lava — molten red/orange */
+.prism-bg-lava {
+  background: linear-gradient(135deg, #1a0000, #b91c1c, #f59e0b, #b91c1c, #1a0000);
+  background-size: 400% 100%;
+  animation: lava-flow 3s ease infinite;
+}
+@keyframes lava-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Holographic — iridescent color shift */
+.prism-bg-holographic {
+  background: linear-gradient(
+    135deg,
+    #ff0000, #ff8800, #ffff00, #00ff00,
+    #00ffff, #0088ff, #8800ff, #ff0088
+  );
+  background-size: 400% 100%;
+  animation: holo-shift 3s linear infinite;
+}
+@keyframes holo-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
+}
+
+/* Aurora — northern lights */
+.prism-bg-aurora {
+  background: linear-gradient(135deg, #0f172a, #065f46, #06b6d4, #8b5cf6, #065f46, #0f172a);
+  background-size: 300% 100%;
+  animation: aurora-wave 5s ease infinite;
+}
+@keyframes aurora-wave {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Gold — shimmering trophy finish */
+.prism-bg-gold {
+  background: linear-gradient(
+    135deg,
+    #92700a 0%, #ffd700 20%, #fffacd 35%, #ffd700 50%,
+    #b8860b 65%, #ffd700 80%, #92700a 100%
+  );
+  background-size: 200% 100%;
+  animation: gold-gleam 2s ease infinite;
+}
+@keyframes gold-gleam {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* ---- Nav Jitter ---- */
 
 @keyframes nav-jitter {
