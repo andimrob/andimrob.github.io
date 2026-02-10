@@ -58,10 +58,7 @@ const quips: ReactNode[] = [
   <QuipFace>
     {"\u{1F914}"} You{"\u2019"}re the curious type, huh?
   </QuipFace>,
-  <QuipFace>
-    {"\u{1F4A4}"} This does nothing productive. Try{" "}
-    {link("https://fallingfalling.com", "this")} instead
-  </QuipFace>,
+  <QuipFace>{"\u{1F4A4}"} Honestly, same. </QuipFace>,
   <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
     {"\u{1F47E}"} Insert coin to continue{"\u2026"}
   </QuipFace>,
@@ -124,7 +121,7 @@ const quips: ReactNode[] = [
     {link("http://staggeringbeauty.com", "this little guy")}. Or do.
   </QuipFace>,
   <QuipFace bg="prism-bg-holographic" text="text-white">
-    {"\u{1F3B0}"} You hit the jackpot. The prize: more flipping.
+    {"\u{1F3B0}"} You hit jackpot. The prize: more flipping.
   </QuipFace>,
   <QuipFace bg="prism-bg-ocean" text="text-cyan-100">
     {"\u{1F41F}"} If you were a fish, you{"\u2019"}d definitely take the bait
@@ -138,19 +135,19 @@ const quips: ReactNode[] = [
     {link("https://jacksonpollock.org/", "Jackson Pollock")}
   </QuipFace>,
   <QuipFace bg="prism-bg-lava" text="text-orange-100">
-    {"\u{1FA66}"}{" "}
-    {link("https://burymewithmymoney.com/", "Bury me with my money")}
+    {"\u{1FA66}"} There's more to life than{" "}
+    {link("https://burymewithmymoney.com/", "money")}
   </QuipFace>,
   <QuipFace>
-    {"\u{1F611}"} This is{" "}
-    {link("https://www.muchbetterthanthis.com/", "much better than this")}
+    {"\u{1F611}"} It's about{" "}
+    {link("https://www.muchbetterthanthis.com/", "love and connection")}
   </QuipFace>,
   <QuipFace bg="prism-bg-aurora" text="text-cyan-100">
     {"\u{1F9CA}"} The real portfolio was the clicks along the way
   </QuipFace>,
   <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
-    {"\u{1F576}\u{FE0F}"} Afraid of the dark?{" "}
-    {link("https://maninthedark.com/", "You should be")}
+    {"\u{1F576}\u{FE0F}"} This one's just{" "}
+    {link("https://maninthedark.com/", "bizarre")}
   </QuipFace>,
   <QuipFace bg="prism-bg-ocean" text="text-cyan-100">
     {"\u{1F96A}"} Behold:{" "}
@@ -169,7 +166,7 @@ const quips: ReactNode[] = [
   </QuipFace>,
   <QuipFace bg="prism-bg-vaporwave" text="text-white">
     {"\u{1F3B6}"} Summer never ends at{" "}
-    {link("https://poolsuite.net/", "Poolsuite")}
+    {link("https://poolsuite.net/", "poolsuite")}
   </QuipFace>,
   <QuipFace bg="prism-bg-lava" text="text-orange-100">
     {"\u{26A1}"} Caution: {link("https://strobe.cool/", "this strobes")}.
@@ -358,7 +355,6 @@ function Header() {
     };
   }, []);
 
-
   const prismClass = `prism ${flipped ? "prism-flipped" : ""} ${peek ? "prism-peek" : ""}`;
 
   return (
@@ -411,10 +407,17 @@ function Header() {
               </div>
 
               {/* Mobile: animated section label */}
-              <div className="relative overflow-hidden sm:hidden" style={{ height: "1.5rem" }}>
+              <div
+                className="relative overflow-hidden sm:hidden"
+                style={{ height: "1.5rem" }}
+              >
                 {/* Invisible widest label to reserve width */}
                 <span className="invisible pb-1 text-sm font-medium">
-                  {sections.reduce((a, b) => (a.label.length >= b.label.length ? a : b)).label}
+                  {
+                    sections.reduce((a, b) =>
+                      a.label.length >= b.label.length ? a : b,
+                    ).label
+                  }
                 </span>
                 {sections.map((s) => {
                   const isActive = active === s.id;
