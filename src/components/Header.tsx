@@ -377,13 +377,9 @@ function Header() {
             className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
             onClick={handleFlip}
           >
-            <a
-              href="#"
-              className="text-lg font-bold tracking-tight text-gray-900 dark:text-white"
-              onClick={(e) => e.stopPropagation()}
-            >
-              AR
-            </a>
+            <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+              Robert Blakey
+            </span>
 
             <div className="flex items-center gap-5">
               {/* Desktop nav links */}
