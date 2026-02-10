@@ -333,12 +333,13 @@ function Header() {
     const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
     if (!isTouchDevice) return;
 
+    let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
 
     const scheduleNext = () => {
       const delay = 3000 + Math.random() * 5000; // 3–8s
       timer = setTimeout(() => {
-        if (hasInteracted.current) return;
+        if (cancelled || hasInteracted.current) return;
         if (Math.random() < 0.5) {
           setJitter(false);
           requestAnimationFrame(() => setJitter(true));
@@ -351,7 +352,10 @@ function Header() {
     };
 
     scheduleNext();
-    return () => clearTimeout(timer);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, []);
 
 
