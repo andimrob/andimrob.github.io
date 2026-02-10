@@ -58,7 +58,7 @@ const quips: ReactNode[] = [
   <QuipFace>
     {"\u{1F914}"} You{"\u2019"}re the curious type, huh?
   </QuipFace>,
-  <QuipFace>{"\u{1F4A4}"} Honestly, same. </QuipFace>,
+  <QuipFace>{"\u{1F91D}"} Honestly, same. </QuipFace>,
   <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
     {"\u{1F47E}"} Insert coin to continue{"\u2026"}
   </QuipFace>,
