@@ -1,7 +1,7 @@
 import { useTextScramble } from "../hooks/useTextScramble";
 
 function Hero() {
-  const name = useTextScramble("Andi Robinson");
+  const name = useTextScramble("Robert Blakey");
 
   return (
     <section className="px-6 pt-40 pb-24 text-center">
