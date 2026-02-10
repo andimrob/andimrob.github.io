@@ -262,10 +262,13 @@ function Header() {
       } else {
         fireCoinCollect(e.clientX, e.clientY);
       }
-      autoFlipTimer.current = setTimeout(
-        () => setFlipped(false),
-        AUTO_ROTATE_BACK_MS,
-      );
+      autoFlipTimer.current = setTimeout(() => {
+        // Swap in the next quip so it's visible as the bar rotates back,
+        // teasing the user that there's more to discover.
+        const nextIdx = count % quips.length;
+        setQuip(quips[nextIdx]);
+        requestAnimationFrame(() => setFlipped(false));
+      }, AUTO_ROTATE_BACK_MS);
     }
     setFlipped((f) => !f);
   };
