@@ -80,4 +80,17 @@ window.addEventListener("load", () => {
 ⠀⠀⠀⠀⠈⠛⠿⠿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⠿⠿⠟⠋⠀⠀⠀⠀`,
   ];
   console.log(arts[Math.floor(Math.random() * arts.length)]);
+
+  // Animated favicon — cycle through frames
+  const faviconFrames = ["/ed-1.ico", "/ed-2.ico", "/ed-3.ico", "/ed-4.ico"];
+  const faviconEl = document.querySelector<HTMLLinkElement>(
+    'link[rel="icon"]',
+  );
+  if (faviconEl) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % faviconFrames.length;
+      faviconEl.href = faviconFrames[i];
+    }, 1500);
+  }
 });
