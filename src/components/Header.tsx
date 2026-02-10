@@ -286,7 +286,13 @@ function Header() {
           </div>
 
           {/* Bottom Face */}
-          <div className="prism-face prism-bottom bg-gray-950 dark:bg-white" />
+          <div
+            className="prism-face prism-bottom flex items-center justify-center bg-gray-950 px-6 dark:bg-white"
+          >
+            <span className="text-sm font-medium text-white dark:text-gray-900">
+              {"\u2193"} The good stuff is up there {"\u2191"}
+            </span>
+          </div>
         </div>
       </div>
     </div>
