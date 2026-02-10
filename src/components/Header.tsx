@@ -205,7 +205,9 @@ const quips: ReactNode[] = [
 function Header() {
   const [flipped, setFlipped] = useState(false);
   const [jitter, setJitter] = useState(false);
+  const [peek, setPeek] = useState(false);
   const [quip, setQuip] = useState<ReactNode>(quips[0]);
+  const hasInteracted = useRef(false);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
 
@@ -235,6 +237,8 @@ function Header() {
   }, [updateUnderline]);
 
   const handleFlip = (e: React.MouseEvent) => {
+    hasInteracted.current = true;
+
     // Clear magnetic tilt so CSS class transform takes over
     if (prismRef.current) prismRef.current.style.transform = "";
 
@@ -324,9 +328,35 @@ function Header() {
     };
   }, []);
 
+  // Mobile idle hints — random peek/jitter until first tap
+  useEffect(() => {
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    if (!isTouchDevice) return;
+
+    let timer: ReturnType<typeof setTimeout>;
+
+    const scheduleNext = () => {
+      const delay = 3000 + Math.random() * 5000; // 3–8s
+      timer = setTimeout(() => {
+        if (hasInteracted.current) return;
+        if (Math.random() < 0.5) {
+          setJitter(false);
+          requestAnimationFrame(() => setJitter(true));
+        } else {
+          setPeek(false);
+          requestAnimationFrame(() => setPeek(true));
+        }
+        scheduleNext();
+      }, delay);
+    };
+
+    scheduleNext();
+    return () => clearTimeout(timer);
+  }, []);
+
   const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
-  const prismClass = `prism ${flipped ? "prism-flipped" : ""}`;
+  const prismClass = `prism ${flipped ? "prism-flipped" : ""} ${peek ? "prism-peek" : ""}`;
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
@@ -334,10 +364,14 @@ function Header() {
         className={`prism-perspective mx-auto max-w-5xl ${jitter ? "prism-jitter" : ""}`}
         onAnimationEnd={() => setJitter(false)}
       >
-        <div ref={prismRef} className={prismClass}>
+        <div
+          ref={prismRef}
+          className={prismClass}
+          onAnimationEnd={() => setPeek(false)}
+        >
           {/* Front Face */}
           <div
-            className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950"
+            className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
             onClick={handleFlip}
           >
             <a
