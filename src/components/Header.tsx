@@ -12,6 +12,9 @@ const sections = [
 
 const sectionIds = sections.map((s) => s.id);
 
+// How long the flipped face stays visible before auto-rotating back (ms)
+const AUTO_ROTATE_BACK_MS = 2000;
+
 const link = (href: string, text: string) => (
   <a
     href={href}
@@ -102,7 +105,7 @@ function Header() {
       } else {
         fireCoinCollect(e.clientX, e.clientY);
       }
-      autoFlipTimer.current = setTimeout(() => setFlipped(false), 1000);
+      autoFlipTimer.current = setTimeout(() => setFlipped(false), AUTO_ROTATE_BACK_MS);
     }
     setFlipped((f) => !f);
   };
