@@ -54,9 +54,10 @@ typings/
 # dotenv environment variable files
 .env*
 
-# gatsby files
+# Build output
 .cache/
 public
+tsconfig.tsbuildinfo
 
 # Mac files
 .DS_Store
