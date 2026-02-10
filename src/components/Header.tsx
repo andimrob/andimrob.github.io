@@ -54,8 +54,10 @@ function QuipFace({
 }
 
 const quips: ReactNode[] = [
-  <QuipFace>{"\u{1F44B}"} Hey, you found the secret side!</QuipFace>,
-  <QuipFace>
+  <QuipFace bg="prism-bg-coral" text="text-white">
+    {"\u{1F44B}"} Hey, you found the secret side!
+  </QuipFace>,
+  <QuipFace bg="prism-bg-turquoise" text="text-gray-900">
     {"\u{1F914}"} You{"\u2019"}re the curious type, huh?
   </QuipFace>,
   <QuipFace>{"\u{1F91D}"} Honestly, same. </QuipFace>,

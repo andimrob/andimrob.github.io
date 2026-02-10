@@ -131,6 +131,28 @@
   50% { background-position: 100% 50%; }
 }
 
+/* Coral Sunset — light coral / peach / warm pink */
+.prism-bg-coral {
+  background: linear-gradient(135deg, #ff6b6b, #f08080, #ffa07a, #ff7eb3, #ff6b6b);
+  background-size: 300% 100%;
+  animation: coral-pulse 4s ease infinite;
+}
+@keyframes coral-pulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Turquoise Lagoon — turquoise / teal / mint */
+.prism-bg-turquoise {
+  background: linear-gradient(135deg, #00c9a7, #40e0d0, #48d1cc, #00bfff, #7fffd4, #00c9a7);
+  background-size: 300% 100%;
+  animation: turquoise-shimmer 5s ease infinite;
+}
+@keyframes turquoise-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* Gold — shimmering trophy finish */
 .prism-bg-gold {
   background: linear-gradient(
