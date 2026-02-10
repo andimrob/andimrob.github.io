@@ -411,12 +411,35 @@ function Header() {
                 />
               </div>
 
-              {/* Mobile: current section label */}
-              <div className="relative sm:hidden">
-                <span className="pb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  {activeLabel}
+              {/* Mobile: animated section label */}
+              <div className="relative overflow-hidden sm:hidden" style={{ height: "1.5rem" }}>
+                {/* Invisible widest label to reserve width */}
+                <span className="invisible pb-1 text-sm font-medium">
+                  {sections.reduce((a, b) => (a.label.length >= b.label.length ? a : b)).label}
                 </span>
-                <span className="absolute -bottom-0.5 left-0 h-[2px] w-full bg-gray-900 dark:bg-white" />
+                {sections.map((s) => {
+                  const isActive = active === s.id;
+                  const idx = sectionIds.indexOf(s.id);
+                  const activeIdx = sectionIds.indexOf(active);
+                  const above = idx < activeIdx;
+                  let y = "0%";
+                  if (!isActive) y = above ? "-100%" : "100%";
+                  return (
+                    <span
+                      key={s.id}
+                      className="absolute inset-0 flex items-center justify-end text-sm font-medium text-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:text-white"
+                      style={{
+                        transform: `translateY(${y})`,
+                        opacity: isActive ? 1 : 0,
+                      }}
+                    >
+                      <span className="relative pb-1">
+                        {s.label}
+                        <span className="absolute bottom-0 left-0 h-[2px] w-full bg-gray-900 dark:bg-white" />
+                      </span>
+                    </span>
+                  );
+                })}
               </div>
 
               {/* Theme toggle */}
