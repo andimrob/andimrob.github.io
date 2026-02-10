@@ -354,7 +354,6 @@ function Header() {
     return () => clearTimeout(timer);
   }, []);
 
-  const activeLabel = sections.find((s) => s.id === active)?.label ?? "";
 
   const prismClass = `prism ${flipped ? "prism-flipped" : ""} ${peek ? "prism-peek" : ""}`;
 
