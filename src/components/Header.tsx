@@ -112,7 +112,7 @@ function Header() {
 
   // Magnetic cursor-tracking tilt
   useEffect(() => {
-    const MAX_TILT_X = 15; // max rotateX degrees
+    const MAX_TILT_X = 18; // max rotateX degrees
     const MAX_TILT_Y = 8;  // max rotateY degrees
     const ATTRACT_RANGE = 200; // px from navbar center where effect is active
 
