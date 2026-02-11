@@ -7,7 +7,6 @@ import {
 } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
-import { useTypewriter } from "../hooks/useTypewriter";
 import { fireConfetti } from "../confetti";
 import { fireCoinCollect } from "../coinCollect";
 
@@ -210,10 +209,6 @@ function Header() {
   const hasInteracted = useRef(false);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
-  const { displayed: typedName, showCursor: nameCursor } = useTypewriter(
-    "Robert Blakey",
-    { delay: 500, speed: 80 },
-  );
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -223,15 +218,12 @@ function Header() {
   const underlineRef = useRef<HTMLSpanElement>(null);
 
   const updateUnderline = useCallback(() => {
-    const container = navRef.current;
     const link = linkRefs.current[active];
     const bar = underlineRef.current;
-    if (!container || !link || !bar) return;
+    if (!link || !bar) return;
 
-    const cRect = container.getBoundingClientRect();
-    const lRect = link.getBoundingClientRect();
-    bar.style.left = `${lRect.left - cRect.left}px`;
-    bar.style.width = `${lRect.width}px`;
+    bar.style.left = `${link.offsetLeft}px`;
+    bar.style.width = `${link.offsetWidth}px`;
   }, [active]);
 
   useEffect(() => {
@@ -380,83 +372,41 @@ function Header() {
         >
           {/* Front Face */}
           <div
-            className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
+            className="prism-face prism-front grid cursor-pointer grid-cols-[1fr_auto_1fr] items-center bg-white px-3 shadow-2xl sm:px-6 dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
             onClick={handleFlip}
           >
-            <span
-              className={`text-lg font-bold tracking-tight text-gray-900 dark:text-white${nameCursor ? " typewriter-cursor" : ""}`}
+            <div />
+
+            {/* Centered nav links */}
+            <div
+              ref={navRef}
+              className="relative flex items-center gap-6"
             >
-              {typedName}
-            </span>
+              {sections.map((s) => (
+                <a
+                  key={s.id}
+                  ref={(el) => {
+                    linkRefs.current[s.id] = el;
+                  }}
+                  href={`#${s.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className={`pb-1 text-sm font-medium transition-colors ${
+                    active === s.id
+                      ? "nav-active-gradient"
+                      : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                  }`}
+                >
+                  {s.label}
+                </a>
+              ))}
+              <span
+                ref={underlineRef}
+                className="absolute bottom-0 h-[2px] nav-active-underline transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+              />
+            </div>
 
-            <div className="flex items-center gap-5">
-              {/* Desktop nav links */}
-              <div
-                ref={navRef}
-                className="relative hidden items-center gap-6 sm:flex"
-              >
-                {sections.map((s) => (
-                  <a
-                    key={s.id}
-                    ref={(el) => {
-                      linkRefs.current[s.id] = el;
-                    }}
-                    href={`#${s.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className={`pb-1 text-sm font-medium transition-colors ${
-                      active === s.id
-                        ? "nav-active-gradient"
-                        : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    {s.label}
-                  </a>
-                ))}
-                <span
-                  ref={underlineRef}
-                  className="absolute bottom-0 h-[2px] nav-active-underline transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                />
-              </div>
-
-              {/* Mobile: animated section label */}
-              <div
-                className="relative overflow-hidden sm:hidden"
-                style={{ height: "1.5rem" }}
-              >
-                {/* Invisible widest label to reserve width */}
-                <span className="invisible pb-1 text-sm font-medium">
-                  {
-                    sections.reduce((a, b) =>
-                      a.label.length >= b.label.length ? a : b,
-                    ).label
-                  }
-                </span>
-                {sections.map((s) => {
-                  const isActive = active === s.id;
-                  const idx = sectionIds.indexOf(s.id);
-                  const activeIdx = sectionIds.indexOf(active);
-                  const above = idx < activeIdx;
-                  let y = "0%";
-                  if (!isActive) y = above ? "-100%" : "100%";
-                  return (
-                    <span
-                      key={s.id}
-                      className="absolute inset-0 flex items-center justify-end text-sm font-medium text-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:text-white"
-                      style={{
-                        transform: `translateY(${y})`,
-                        opacity: isActive ? 1 : 0,
-                      }}
-                    >
-                      <span className={`relative pb-1 ${isActive ? "nav-active-gradient" : ""}`}>
-                        {s.label}
-                        <span className="absolute bottom-0 left-0 h-[2px] w-full nav-active-underline" />
-                      </span>
-                    </span>
-                  );
-                })}
-              </div>
-
-              {/* Theme toggle */}
+            {/* Theme toggle */}
+            <div className="flex justify-end pl-6">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
