@@ -7,7 +7,6 @@ import {
 } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
-import { useTypewriter } from "../hooks/useTypewriter";
 import { fireConfetti } from "../confetti";
 import { fireCoinCollect } from "../coinCollect";
 
@@ -210,10 +209,6 @@ function Header() {
   const hasInteracted = useRef(false);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
-  const { displayed: typedName, showCursor: nameCursor } = useTypewriter(
-    "Robert Blakey",
-    { delay: 500, speed: 80 },
-  );
 
   const flipCount = useRef(0);
   const autoFlipTimer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -378,127 +373,129 @@ function Header() {
           className={prismClass}
           onAnimationEnd={() => setPeek(false)}
         >
-          {/* Front Face */}
+          {/* Front Face — Name Tag Sticker */}
           <div
-            className="prism-face prism-front flex cursor-pointer items-center justify-between bg-white px-6 shadow-2xl dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
+            className="prism-face prism-front nametag-sticker cursor-pointer"
             onClick={handleFlip}
           >
-            <span
-              className={`text-lg font-bold tracking-tight text-gray-900 dark:text-white${nameCursor ? " typewriter-cursor" : ""}`}
-            >
-              {typedName}
-            </span>
+            <div className="nametag-red">
+              <span className="nametag-hello">HELLO</span>
+              <span className="nametag-mynameis">my name is</span>
+            </div>
+            <div className="nametag-white">
+              <span className="nametag-name">Rob</span>
 
-            <div className="flex items-center gap-5">
-              {/* Desktop nav links */}
-              <div
-                ref={navRef}
-                className="relative hidden items-center gap-6 sm:flex"
-              >
-                {sections.map((s) => (
-                  <a
-                    key={s.id}
-                    ref={(el) => {
-                      linkRefs.current[s.id] = el;
-                    }}
-                    href={`#${s.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className={`pb-1 text-sm font-medium transition-colors ${
-                      active === s.id
-                        ? "text-gray-900 dark:text-white"
-                        : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    {s.label}
-                  </a>
-                ))}
-                <span
-                  ref={underlineRef}
-                  className="absolute bottom-0 h-[2px] bg-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:bg-white"
-                />
-              </div>
-
-              {/* Mobile: animated section label */}
-              <div
-                className="relative overflow-hidden sm:hidden"
-                style={{ height: "1.5rem" }}
-              >
-                {/* Invisible widest label to reserve width */}
-                <span className="invisible pb-1 text-sm font-medium">
-                  {
-                    sections.reduce((a, b) =>
-                      a.label.length >= b.label.length ? a : b,
-                    ).label
-                  }
-                </span>
-                {sections.map((s) => {
-                  const isActive = active === s.id;
-                  const idx = sectionIds.indexOf(s.id);
-                  const activeIdx = sectionIds.indexOf(active);
-                  const above = idx < activeIdx;
-                  let y = "0%";
-                  if (!isActive) y = above ? "-100%" : "100%";
-                  return (
-                    <span
+              <div className="flex items-center gap-5">
+                {/* Desktop nav links */}
+                <div
+                  ref={navRef}
+                  className="relative hidden items-center gap-6 sm:flex"
+                >
+                  {sections.map((s) => (
+                    <a
                       key={s.id}
-                      className="absolute inset-0 flex items-center justify-end text-sm font-medium text-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:text-white"
-                      style={{
-                        transform: `translateY(${y})`,
-                        opacity: isActive ? 1 : 0,
+                      ref={(el) => {
+                        linkRefs.current[s.id] = el;
                       }}
+                      href={`#${s.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`pb-1 text-sm font-medium transition-colors ${
+                        active === s.id
+                          ? "text-gray-800"
+                          : "text-gray-400 hover:text-gray-600"
+                      }`}
                     >
-                      <span className="relative pb-1">
-                        {s.label}
-                        <span className="absolute bottom-0 left-0 h-[2px] w-full bg-gray-900 dark:bg-white" />
-                      </span>
-                    </span>
-                  );
-                })}
-              </div>
+                      {s.label}
+                    </a>
+                  ))}
+                  <span
+                    ref={underlineRef}
+                    className="absolute bottom-0 h-[2px] bg-gray-800 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  />
+                </div>
 
-              {/* Theme toggle */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggle();
-                }}
-                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
-              >
-                {theme === "dark" ? (
-                  <svg
-                    className="h-[18px] w-[18px]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx={12} cy={12} r={5} />
-                    <line x1={12} y1={1} x2={12} y2={3} />
-                    <line x1={12} y1={21} x2={12} y2={23} />
-                    <line x1={4.22} y1={4.22} x2={5.64} y2={5.64} />
-                    <line x1={18.36} y1={18.36} x2={19.78} y2={19.78} />
-                    <line x1={1} y1={12} x2={3} y2={12} />
-                    <line x1={21} y1={12} x2={23} y2={12} />
-                    <line x1={4.22} y1={19.78} x2={5.64} y2={18.36} />
-                    <line x1={18.36} y1={5.64} x2={19.78} y2={4.22} />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-[18px] w-[18px]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                  </svg>
-                )}
-              </button>
+                {/* Mobile: animated section label */}
+                <div
+                  className="relative overflow-hidden sm:hidden"
+                  style={{ height: "1.5rem" }}
+                >
+                  {/* Invisible widest label to reserve width */}
+                  <span className="invisible pb-1 text-sm font-medium">
+                    {
+                      sections.reduce((a, b) =>
+                        a.label.length >= b.label.length ? a : b,
+                      ).label
+                    }
+                  </span>
+                  {sections.map((s) => {
+                    const isActive = active === s.id;
+                    const idx = sectionIds.indexOf(s.id);
+                    const activeIdx = sectionIds.indexOf(active);
+                    const above = idx < activeIdx;
+                    let y = "0%";
+                    if (!isActive) y = above ? "-100%" : "100%";
+                    return (
+                      <span
+                        key={s.id}
+                        className="absolute inset-0 flex items-center justify-end text-sm font-medium text-gray-800 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                        style={{
+                          transform: `translateY(${y})`,
+                          opacity: isActive ? 1 : 0,
+                        }}
+                      >
+                        <span className="relative pb-1">
+                          {s.label}
+                          <span className="absolute bottom-0 left-0 h-[2px] w-full bg-gray-800" />
+                        </span>
+                      </span>
+                    );
+                  })}
+                </div>
+
+                {/* Theme toggle */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle();
+                  }}
+                  aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                  className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:text-gray-700"
+                >
+                  {theme === "dark" ? (
+                    <svg
+                      className="h-[18px] w-[18px]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx={12} cy={12} r={5} />
+                      <line x1={12} y1={1} x2={12} y2={3} />
+                      <line x1={12} y1={21} x2={12} y2={23} />
+                      <line x1={4.22} y1={4.22} x2={5.64} y2={5.64} />
+                      <line x1={18.36} y1={18.36} x2={19.78} y2={19.78} />
+                      <line x1={1} y1={12} x2={3} y2={12} />
+                      <line x1={21} y1={12} x2={23} y2={12} />
+                      <line x1={4.22} y1={19.78} x2={5.64} y2={18.36} />
+                      <line x1={18.36} y1={5.64} x2={19.78} y2={4.22} />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="h-[18px] w-[18px]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -511,7 +508,7 @@ function Header() {
           </div>
 
           {/* Bottom Face */}
-          <div className="prism-face prism-bottom flex items-center justify-center bg-gray-950 px-6 dark:bg-white"></div>
+          <div className="prism-face prism-bottom flex items-center justify-center bg-red-600"></div>
         </div>
       </div>
     </div>
