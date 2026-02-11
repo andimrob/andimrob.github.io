@@ -5,12 +5,14 @@ import About from "./components/About";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import CursorGlow from "./components/CursorGlow";
 import { initXRay } from "./xray";
 
 function App() {
   useEffect(() => initXRay(), []);
   return (
     <>
+      <CursorGlow />
       <Header />
       <main>
         <Hero />
