@@ -1,14 +1,35 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { onXRayChange, mouseX, mouseY } from "../xray";
 
 function CursorGlow() {
   const ref = useRef<HTMLDivElement>(null);
+  const [xrayActive, setXrayActive] = useState(false);
+
+  useEffect(() => {
+    const unsub = onXRayChange(setXrayActive);
+    return () => { unsub(); };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      el.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(120, 140, 255, 0.07), transparent 70%)`;
+    if (xrayActive) {
+      el.style.background = "";
+      return;
+    }
+
+    const setGlow = (x: number, y: number) => {
+      el.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(120, 140, 255, 0.07), transparent 70%)`;
+    };
+
+    // Immediately restore glow at current shared mouse position
+    if (mouseX !== -300) {
+      setGlow(mouseX, mouseY);
+    }
+
+    const handleMouseMove = () => {
+      setGlow(mouseX, mouseY);
     };
 
     const handleMouseLeave = () => {
@@ -21,7 +42,7 @@ function CursorGlow() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [xrayActive]);
 
   return (
     <div
