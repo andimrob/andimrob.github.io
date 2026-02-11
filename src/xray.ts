@@ -2,10 +2,9 @@
  * X-Ray Source Code Easter Egg
  *
  * Press "x" on the keyboard to toggle an X-ray lens that follows
- * the mouse. Through the lens, the page content appears restyled
- * as monospaced "source code" with syntax-highlighted colors on
- * a dark translucent background. The lens has a glass border and
- * backdrop blur for a physical magnifying-glass feel.
+ * the mouse. Through the lens the site's actual minified source
+ * code (the JS bundle) is revealed with Dracula-theme
+ * syntax highlighting on a dark background.
  *
  * The real page underneath remains fully interactive because the
  * overlay uses pointer-events: none.
@@ -13,16 +12,121 @@
 
 const LENS_RADIUS = 140;
 
+/* ── Catppuccin Mocha palette ── */
+
+const C = {
+  bg: "#1e1e2e",
+  fg: "#cdd6f4",
+  overlay: "#6c7086",
+  blue: "#89b4fa",
+  green: "#a6e3a1",
+  teal: "#94e2d5",
+  mauve: "#cba6f7",
+  peach: "#fab387",
+  red: "#f38ba8",
+  yellow: "#f9e2af",
+} as const;
+
+/* ── State ── */
+
 let container: HTMLElement | null = null;
 let blurLayer: HTMLElement | null = null;
 let overlay: HTMLElement | null = null;
 let inner: HTMLElement | null = null;
 let ring: HTMLElement | null = null;
-let styleEl: HTMLStyleElement | null = null;
 let fontLink: HTMLLinkElement | null = null;
 let active = false;
 let mouseX = -300;
 let mouseY = -300;
+let cachedSourceHTML: string | null = null;
+
+/* ── Escape HTML entities ── */
+
+function esc(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* ── Single-pass regex syntax highlighter ── */
+
+type Rule = readonly [RegExp, string];
+
+function highlight(code: string, rules: readonly Rule[]): string {
+  if (!code) return "";
+  const combined = new RegExp(
+    rules.map((r) => `(${r[0].source})`).join("|"),
+    "gm",
+  );
+  let out = "";
+  let last = 0;
+  for (const m of code.matchAll(combined)) {
+    // Unmatched text before this token — inherits default color from <pre>
+    if (m.index! > last) out += esc(code.slice(last, m.index!));
+    // Determine which capture group matched and apply its color
+    for (let i = 0; i < rules.length; i++) {
+      if (m[i + 1] !== undefined) {
+        out += `<span style="color:${rules[i][1]};text-shadow:0 0 6px ${rules[i][1]}80,0 0 14px ${rules[i][1]}40">${esc(m[0])}</span>`;
+        break;
+      }
+    }
+    last = m.index! + m[0].length;
+  }
+  if (last < code.length) out += esc(code.slice(last));
+  return out;
+}
+
+/* ── Language rules (order matters — first match wins) ── */
+
+const JS_RULES: Rule[] = [
+  [/"(?:[^"\\]|\\.)*"/, C.green],
+  [/'(?:[^'\\]|\\.)*'/, C.green],
+  [/`(?:[^`\\]|\\.)*`/, C.green],
+  [
+    /\b(?:const|let|var|function|return|if|else|for|while|class|import|export|from|new|this|typeof|instanceof|async|await|try|catch|throw|switch|case|default|break|continue|do|in|of|void|delete|yield|extends|super|static|get|set)\b/,
+    C.mauve,
+  ],
+  [/\b(?:true|false|null|undefined|NaN|Infinity)\b/, C.peach],
+  [
+    /\b(?:console|document|window|Math|Object|Array|String|Number|Promise|Error|Map|Set|JSON|Date|RegExp|Symbol|Proxy|Reflect)\b/,
+    C.blue,
+  ],
+  [/\.[\w$]+/, C.teal],
+  [/\b\d+\.?\d*(?:e[+-]?\d+)?\b/i, C.peach],
+  [/=>/, C.mauve],
+  [/[{}()\[\];,]/, C.overlay],
+];
+
+/* ── Collapse whitespace so dev-mode source looks minified ── */
+
+function compact(code: string): string {
+  return code
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\/\/[^\n]*/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/* ── Fetch & highlight the site's JS bundle(s) ── */
+
+async function buildSource(): Promise<string> {
+  if (cachedSourceHTML) return cachedSourceHTML;
+
+  const chunks: string[] = [];
+  const scripts = document.querySelectorAll<HTMLScriptElement>("script[src]");
+  for (const script of scripts) {
+    try {
+      const text = await (await fetch(script.src)).text();
+      chunks.push(text);
+    } catch {
+      /* skip unavailable scripts */
+    }
+  }
+
+  const raw = compact(chunks.join(";"));
+  cachedSourceHTML = highlight(raw, JS_RULES);
+  return cachedSourceHTML;
+}
+
+/* ── Font ── */
 
 function ensureFont() {
   if (document.getElementById("xray-font")) return;
@@ -30,60 +134,13 @@ function ensureFont() {
   fontLink.id = "xray-font";
   fontLink.rel = "stylesheet";
   fontLink.href =
-    "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap";
+    "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap";
   document.head.appendChild(fontLink);
 }
 
-function injectStyles() {
-  styleEl = document.createElement("style");
-  styleEl.id = "xray-styles";
-  styleEl.textContent = `
-    #xray-overlay * {
-      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
-      box-shadow: none !important;
-    }
+/* ── Build DOM layers ── */
 
-    #xray-inner {
-      background: rgba(22, 22, 35, 0.85) !important;
-    }
-
-    #xray-overlay h1, #xray-overlay h2, #xray-overlay h3, #xray-overlay h4 {
-      color: #ff79c6 !important;
-    }
-    #xray-overlay p, #xray-overlay li {
-      color: #50fa7b !important;
-    }
-    #xray-overlay a {
-      color: #8be9fd !important;
-      text-decoration: underline !important;
-    }
-    #xray-overlay button, #xray-overlay [role="button"] {
-      color: #f1fa8c !important;
-      background: rgba(255,255,255,0.06) !important;
-      border-color: rgba(255,255,255,0.15) !important;
-    }
-    #xray-overlay span {
-      color: #bd93f9 !important;
-    }
-    #xray-overlay svg {
-      color: #ffb86c !important;
-      stroke: #ffb86c !important;
-    }
-    #xray-overlay img {
-      filter: grayscale(1) brightness(0.6) contrast(1.2) !important;
-    }
-    #xray-overlay section, #xray-overlay div {
-      background: transparent !important;
-      border-color: rgba(255,255,255,0.08) !important;
-    }
-  `;
-  document.head.appendChild(styleEl);
-}
-
-function createLayers() {
-  const root = document.getElementById("root");
-  if (!root) return;
-
+function createLayers(sourceHTML: string) {
   container = document.createElement("div");
   container.id = "xray-container";
   container.style.cssText =
@@ -99,7 +156,7 @@ function createLayers() {
   ].join("");
   container.appendChild(blurLayer);
 
-  // Code overlay — cloned content restyled as "source code"
+  // Code overlay — syntax-highlighted source visible through the lens
   overlay = document.createElement("div");
   overlay.id = "xray-overlay";
   overlay.style.cssText = [
@@ -110,12 +167,25 @@ function createLayers() {
 
   inner = document.createElement("div");
   inner.id = "xray-inner";
-  inner.style.cssText = "min-height:100%;";
+  inner.style.cssText = `background:${C.bg};min-height:100vh;`;
 
-  const clone = root.cloneNode(true) as HTMLElement;
-  clone.removeAttribute("id");
+  const pre = document.createElement("pre");
+  pre.style.cssText = [
+    `color:${C.fg};`,
+    `text-shadow:0 0 6px ${C.fg}80,0 0 14px ${C.fg}40;`,
+    `background:${C.bg};`,
+    "font-family:'JetBrains Mono','Fira Code','Courier New',monospace;",
+    "font-size:13.5px;",
+    "line-height:1.35;",
+    "padding:12px;",
+    "margin:0;",
+    "white-space:pre-wrap;",
+    "word-wrap:break-word;",
+    "overflow-wrap:break-word;",
+  ].join("");
+  pre.innerHTML = sourceHTML;
 
-  inner.appendChild(clone);
+  inner.appendChild(pre);
   overlay.appendChild(inner);
   container.appendChild(overlay);
 
@@ -125,10 +195,10 @@ function createLayers() {
     "position:fixed;",
     `width:${LENS_RADIUS * 2}px;`,
     `height:${LENS_RADIUS * 2}px;`,
-    "border:1.5px solid rgba(255,255,255,0.35);",
+    "border:1.5px solid rgba(180,190,254,0.4);",
     "border-radius:50%;",
     "pointer-events:none;",
-    "box-shadow:0 0 20px 2px rgba(255,255,255,0.08),inset 0 0 20px 2px rgba(255,255,255,0.04);",
+    "box-shadow:0 0 20px 2px rgba(137,180,250,0.1),inset 0 0 20px 2px rgba(137,180,250,0.05);",
     "transform:translate(-50%,-50%);",
     "left:-300px;top:-300px;",
   ].join("");
@@ -136,6 +206,8 @@ function createLayers() {
 
   document.body.appendChild(container);
 }
+
+/* ── Lens position & proportional scroll ── */
 
 function updateLens() {
   const clip = `circle(${LENS_RADIUS}px at ${mouseX}px ${mouseY}px)`;
@@ -148,10 +220,19 @@ function updateLens() {
 }
 
 function syncScroll() {
-  if (inner) {
-    inner.style.transform = `translateY(${-window.scrollY}px)`;
+  if (!inner) return;
+  const maxPageScroll = document.body.scrollHeight - window.innerHeight;
+  const maxCodeScroll = inner.scrollHeight - window.innerHeight;
+  if (maxPageScroll <= 0) {
+    inner.style.transform = "translateY(0)";
+    return;
   }
+  const fraction = Math.min(window.scrollY / maxPageScroll, 1);
+  const codeOffset = fraction * Math.max(0, maxCodeScroll);
+  inner.style.transform = `translateY(${-codeOffset}px)`;
 }
+
+/* ── Event handlers ── */
 
 function onMouseMove(e: MouseEvent) {
   if (!active) return;
@@ -168,29 +249,32 @@ function onScroll() {
   requestAnimationFrame(syncScroll);
 }
 
+/* ── Teardown ── */
+
 function teardown() {
   active = false;
   container?.remove();
-  styleEl?.remove();
   container = null;
   blurLayer = null;
   overlay = null;
   inner = null;
   ring = null;
-  styleEl = null;
   window.removeEventListener("mousemove", onMouseMove);
   window.removeEventListener("scroll", onScroll);
 }
 
-export function activateXRay() {
+/* ── Public API ── */
+
+export async function activateXRay() {
   if (active) {
     teardown();
     return;
   }
   active = true;
   ensureFont();
-  injectStyles();
-  createLayers();
+  const sourceHTML = await buildSource();
+  if (!active) return; // user toggled off during fetch
+  createLayers(sourceHTML);
   syncScroll();
 
   window.addEventListener("mousemove", onMouseMove);
