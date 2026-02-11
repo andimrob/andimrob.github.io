@@ -218,12 +218,11 @@
   background: #f5f0eb;
 }
 
-.nametag-name {
-  font-family: "Caveat", cursive;
-  font-size: 3.4rem;
-  font-weight: 700;
+.nametag-name-svg {
+  width: 55%;
+  max-width: 220px;
+  height: auto;
   color: #1a1a2e;
-  line-height: 1;
   transform: rotate(-3deg);
 }
 

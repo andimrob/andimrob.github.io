@@ -1,3 +1,5 @@
+import CursiveRob from "./CursiveRob";
+
 function Hero() {
   return (
     <section className="px-6 pt-40 pb-24 text-center">
@@ -9,7 +11,7 @@ function Hero() {
             <span className="nametag-subtitle">my name is</span>
           </div>
           <div className="nametag-white">
-            <span className="nametag-name">Rob</span>
+            <CursiveRob className="nametag-name-svg" />
           </div>
         </div>
 
