@@ -2,7 +2,7 @@ import CursiveRob from "./CursiveRob";
 
 function Hero() {
   return (
-    <section className="px-6 pt-40 pb-24 text-center">
+    <section className="px-6 pt-30 pb-24 text-center">
       <div className="mx-auto flex max-w-4xl flex-col items-center">
         {/* Conference name tag sticker */}
         <div className="nametag">
@@ -11,12 +11,13 @@ function Hero() {
             <span className="nametag-subtitle">my name is</span>
           </div>
           <div className="nametag-white">
-            <CursiveRob className="nametag-name-svg" />
+            <CursiveRob className="nametag-name" />
           </div>
+          <div className="nametag-bottom" />
         </div>
 
-        <p className="mt-8 mb-10 text-xl text-gray-500 max-sm:text-base dark:text-gray-400">
-          Software Developer &amp; Creative Problem Solver
+        <p className="hero-tagline mt-8 mb-10">
+          Software Engineer &amp; Creative Problem Solver
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a
