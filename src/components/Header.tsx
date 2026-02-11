@@ -13,7 +13,7 @@ import { fireCoinCollect } from "../coinCollect";
 const sections = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "contact", label: "Contact" },
+  { id: "projects", label: "Projects" },
 ];
 
 const sectionIds = sections.map((s) => s.id);
@@ -55,7 +55,7 @@ function QuipFace({
 
 const quips: ReactNode[] = [
   <QuipFace bg="prism-bg-coral" text="text-white">
-    {"\u{1F44B}"} Hey, you found the secret side!
+    {"\u{1F44B}"} You found the secret! Keep going!
   </QuipFace>,
   <QuipFace bg="prism-bg-turquoise" text="text-gray-900">
     {"\u{1F914}"} You{"\u2019"}re the curious type, huh?

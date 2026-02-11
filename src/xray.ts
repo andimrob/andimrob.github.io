@@ -3,16 +3,34 @@
  *
  * Press "x" on the keyboard to toggle an X-ray lens that follows
  * the mouse. Through the lens the site's actual minified source
- * code (the JS bundle) is revealed with Dracula-theme
- * syntax highlighting on a dark background.
+ * code (the JS bundle) is revealed with syntax highlighting
+ * on a dark background.
  *
  * The real page underneath remains fully interactive because the
  * overlay uses pointer-events: none.
  */
 
-const LENS_RADIUS = 140;
+/* ================================================================== */
+/*  State                                                              */
+/* ================================================================== */
 
-/* ── Catppuccin Mocha palette ── */
+let active = false;
+const listeners = new Set<(active: boolean) => void>();
+
+export function onXRayChange(fn: (active: boolean) => void) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+function notifyListeners() {
+  listeners.forEach((fn) => fn(active));
+}
+
+/* ================================================================== */
+/*  Mode 1 — X-Ray (existing)                                         */
+/* ================================================================== */
+
+const LENS_RADIUS = 140;
 
 const C = {
   bg: "#1e1e2e",
@@ -27,26 +45,18 @@ const C = {
   yellow: "#f9e2af",
 } as const;
 
-/* ── State ── */
-
-let container: HTMLElement | null = null;
-let blurLayer: HTMLElement | null = null;
-let overlay: HTMLElement | null = null;
-let inner: HTMLElement | null = null;
-let ring: HTMLElement | null = null;
-let fontLink: HTMLLinkElement | null = null;
-let active = false;
-let mouseX = -300;
-let mouseY = -300;
+let xrayContainer: HTMLElement | null = null;
+let xrayBlur: HTMLElement | null = null;
+let xrayOverlay: HTMLElement | null = null;
+let xrayInner: HTMLElement | null = null;
+let xrayRing: HTMLElement | null = null;
+export let mouseX = -300;
+export let mouseY = -300;
 let cachedSourceHTML: string | null = null;
-
-/* ── Escape HTML entities ── */
 
 function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
-
-/* ── Single-pass regex syntax highlighter ── */
 
 type Rule = readonly [RegExp, string];
 
@@ -59,9 +69,7 @@ function highlight(code: string, rules: readonly Rule[]): string {
   let out = "";
   let last = 0;
   for (const m of code.matchAll(combined)) {
-    // Unmatched text before this token — inherits default color from <pre>
     if (m.index! > last) out += esc(code.slice(last, m.index!));
-    // Determine which capture group matched and apply its color
     for (let i = 0; i < rules.length; i++) {
       if (m[i + 1] !== undefined) {
         out += `<span style="color:${rules[i][1]};text-shadow:0 0 6px ${rules[i][1]}80,0 0 14px ${rules[i][1]}40">${esc(m[0])}</span>`;
@@ -73,8 +81,6 @@ function highlight(code: string, rules: readonly Rule[]): string {
   if (last < code.length) out += esc(code.slice(last));
   return out;
 }
-
-/* ── Language rules (order matters — first match wins) ── */
 
 const JS_RULES: Rule[] = [
   [/"(?:[^"\\]|\\.)*"/, C.green],
@@ -95,8 +101,6 @@ const JS_RULES: Rule[] = [
   [/[{}()\[\];,]/, C.overlay],
 ];
 
-/* ── Collapse whitespace so dev-mode source looks minified ── */
-
 function compact(code: string): string {
   return code
     .replace(/\/\*[\s\S]*?\*\//g, "")
@@ -105,11 +109,8 @@ function compact(code: string): string {
     .trim();
 }
 
-/* ── Fetch & highlight the site's JS bundle(s) ── */
-
 async function buildSource(): Promise<string> {
   if (cachedSourceHTML) return cachedSourceHTML;
-
   const chunks: string[] = [];
   const scripts = document.querySelectorAll<HTMLScriptElement>("script[src]");
   for (const script of scripts) {
@@ -117,57 +118,50 @@ async function buildSource(): Promise<string> {
       const text = await (await fetch(script.src)).text();
       chunks.push(text);
     } catch {
-      /* skip unavailable scripts */
+      /* skip */
     }
   }
-
   const raw = compact(chunks.join(";"));
   cachedSourceHTML = highlight(raw, JS_RULES);
   return cachedSourceHTML;
 }
 
-/* ── Font ── */
-
 function ensureFont() {
   if (document.getElementById("xray-font")) return;
-  fontLink = document.createElement("link");
-  fontLink.id = "xray-font";
-  fontLink.rel = "stylesheet";
-  fontLink.href =
+  const link = document.createElement("link");
+  link.id = "xray-font";
+  link.rel = "stylesheet";
+  link.href =
     "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap";
-  document.head.appendChild(fontLink);
+  document.head.appendChild(link);
 }
 
-/* ── Build DOM layers ── */
-
-function createLayers(sourceHTML: string) {
-  container = document.createElement("div");
-  container.id = "xray-container";
-  container.style.cssText =
+function xrayCreateLayers(sourceHTML: string) {
+  xrayContainer = document.createElement("div");
+  xrayContainer.id = "xray-container";
+  xrayContainer.style.cssText =
     "position:fixed;inset:0;z-index:9998;pointer-events:none;";
 
-  // Blur layer — sits between real page and code overlay
-  blurLayer = document.createElement("div");
-  blurLayer.style.cssText = [
+  xrayBlur = document.createElement("div");
+  xrayBlur.style.cssText = [
     "position:fixed;inset:0;",
     "backdrop-filter:blur(4px);",
     "-webkit-backdrop-filter:blur(4px);",
     "clip-path:circle(0px at -300px -300px);",
   ].join("");
-  container.appendChild(blurLayer);
+  xrayContainer.appendChild(xrayBlur);
 
-  // Code overlay — syntax-highlighted source visible through the lens
-  overlay = document.createElement("div");
-  overlay.id = "xray-overlay";
-  overlay.style.cssText = [
+  xrayOverlay = document.createElement("div");
+  xrayOverlay.id = "xray-overlay";
+  xrayOverlay.style.cssText = [
     "position:fixed;inset:0;",
     "overflow:hidden;",
     "clip-path:circle(0px at -300px -300px);",
   ].join("");
 
-  inner = document.createElement("div");
-  inner.id = "xray-inner";
-  inner.style.cssText = `background:${C.bg};min-height:100vh;`;
+  xrayInner = document.createElement("div");
+  xrayInner.id = "xray-inner";
+  xrayInner.style.cssText = `background:${C.bg};min-height:100vh;`;
 
   const pre = document.createElement("pre");
   pre.style.cssText = [
@@ -185,13 +179,12 @@ function createLayers(sourceHTML: string) {
   ].join("");
   pre.innerHTML = sourceHTML;
 
-  inner.appendChild(pre);
-  overlay.appendChild(inner);
-  container.appendChild(overlay);
+  xrayInner.appendChild(pre);
+  xrayOverlay.appendChild(xrayInner);
+  xrayContainer.appendChild(xrayOverlay);
 
-  // Lens ring — thin white glass border
-  ring = document.createElement("div");
-  ring.style.cssText = [
+  xrayRing = document.createElement("div");
+  xrayRing.style.cssText = [
     "position:fixed;",
     `width:${LENS_RADIUS * 2}px;`,
     `height:${LENS_RADIUS * 2}px;`,
@@ -202,90 +195,92 @@ function createLayers(sourceHTML: string) {
     "transform:translate(-50%,-50%);",
     "left:-300px;top:-300px;",
   ].join("");
-  container.appendChild(ring);
+  xrayContainer.appendChild(xrayRing);
 
-  document.body.appendChild(container);
+  document.body.appendChild(xrayContainer);
 }
 
-/* ── Lens position & proportional scroll ── */
-
-function updateLens() {
+function xrayUpdateLens() {
   const clip = `circle(${LENS_RADIUS}px at ${mouseX}px ${mouseY}px)`;
-  if (blurLayer) blurLayer.style.clipPath = clip;
-  if (overlay) overlay.style.clipPath = clip;
-  if (ring) {
-    ring.style.left = `${mouseX}px`;
-    ring.style.top = `${mouseY}px`;
+  if (xrayBlur) xrayBlur.style.clipPath = clip;
+  if (xrayOverlay) xrayOverlay.style.clipPath = clip;
+  if (xrayRing) {
+    xrayRing.style.left = `${mouseX}px`;
+    xrayRing.style.top = `${mouseY}px`;
   }
 }
 
-function syncScroll() {
-  if (!inner) return;
-  const maxPageScroll = document.body.scrollHeight - window.innerHeight;
-  const maxCodeScroll = inner.scrollHeight - window.innerHeight;
-  if (maxPageScroll <= 0) {
-    inner.style.transform = "translateY(0)";
+function xraySyncScroll() {
+  if (!xrayInner) return;
+  const maxPage = document.body.scrollHeight - window.innerHeight;
+  const maxCode = xrayInner.scrollHeight - window.innerHeight;
+  if (maxPage <= 0) {
+    xrayInner.style.transform = "translateY(0)";
     return;
   }
-  const fraction = Math.min(window.scrollY / maxPageScroll, 1);
-  const codeOffset = fraction * Math.max(0, maxCodeScroll);
-  inner.style.transform = `translateY(${-codeOffset}px)`;
+  const fraction = Math.min(window.scrollY / maxPage, 1);
+  xrayInner.style.transform = `translateY(${-(fraction * Math.max(0, maxCode))}px)`;
 }
 
-/* ── Event handlers ── */
-
-function onMouseMove(e: MouseEvent) {
-  if (!active) return;
+function trackMouse(e: MouseEvent) {
   mouseX = e.clientX;
   mouseY = e.clientY;
+}
+
+function xrayOnMouseMove() {
+  if (!active) return;
   requestAnimationFrame(() => {
-    updateLens();
-    syncScroll();
+    xrayUpdateLens();
+    xraySyncScroll();
   });
 }
 
-function onScroll() {
+function xrayOnScroll() {
   if (!active) return;
-  requestAnimationFrame(syncScroll);
+  requestAnimationFrame(xraySyncScroll);
 }
 
-/* ── Teardown ── */
-
-function teardown() {
-  active = false;
-  container?.remove();
-  container = null;
-  blurLayer = null;
-  overlay = null;
-  inner = null;
-  ring = null;
-  window.removeEventListener("mousemove", onMouseMove);
-  window.removeEventListener("scroll", onScroll);
-}
-
-/* ── Public API ── */
-
-export async function activateXRay() {
+async function activateXRay() {
   if (active) {
-    teardown();
+    deactivateXRay();
     return;
   }
   active = true;
+  notifyListeners();
   ensureFont();
   const sourceHTML = await buildSource();
   if (!active) return; // user toggled off during fetch
-  createLayers(sourceHTML);
-  syncScroll();
-
-  window.addEventListener("mousemove", onMouseMove);
-  window.addEventListener("scroll", onScroll, { passive: true });
+  xrayCreateLayers(sourceHTML);
+  xrayUpdateLens();
+  xraySyncScroll();
+  window.addEventListener("mousemove", xrayOnMouseMove);
+  window.addEventListener("scroll", xrayOnScroll, { passive: true });
 }
+
+function deactivateXRay() {
+  active = false;
+  notifyListeners();
+  xrayContainer?.remove();
+  xrayContainer = null;
+  xrayBlur = null;
+  xrayOverlay = null;
+  xrayInner = null;
+  xrayRing = null;
+  window.removeEventListener("mousemove", xrayOnMouseMove);
+  window.removeEventListener("scroll", xrayOnScroll);
+}
+
+/* ================================================================== */
+/*  Public API                                                         */
+/* ================================================================== */
 
 /**
  * Initialise keyboard listener. Press "x" to toggle the X-ray lens.
  * Returns a cleanup function.
  */
 export function initXRay() {
+  window.addEventListener("mousemove", trackMouse);
+
   const onKeyDown = (e: KeyboardEvent) => {
     const tag = (e.target as HTMLElement)?.tagName;
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
@@ -296,7 +291,8 @@ export function initXRay() {
 
   window.addEventListener("keydown", onKeyDown);
   return () => {
+    window.removeEventListener("mousemove", trackMouse);
     window.removeEventListener("keydown", onKeyDown);
-    if (active) teardown();
+    if (active) deactivateXRay();
   };
 }
