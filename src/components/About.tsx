@@ -2,7 +2,7 @@ import RevealSection from "./RevealSection";
 
 function About() {
   return (
-    <RevealSection id="about" className="bg-white dark:bg-gray-900">
+    <RevealSection id="about">
       <div className="mx-auto max-w-4xl px-6">
         <h2 className="relative mb-8 inline-block text-2xl font-bold after:absolute after:-bottom-1.5 after:left-0 after:h-[3px] after:w-12 after:rounded-full after:bg-primary">
           About Me
