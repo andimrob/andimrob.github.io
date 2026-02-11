@@ -1,16 +1,19 @@
-import { useTextScramble } from "../hooks/useTextScramble";
-
 function Hero() {
-  const name = useTextScramble("Robert Blakey");
-
   return (
     <section className="px-6 pt-40 pb-24 text-center">
-      <div className="mx-auto max-w-4xl">
-        <p className="mb-2 text-lg font-medium text-primary">Hello, I'm</p>
-        <h1 className="mb-4 text-5xl font-bold tracking-tight max-sm:text-4xl">
-          {name}
-        </h1>
-        <p className="mb-10 text-xl text-gray-500 max-sm:text-base dark:text-gray-400">
+      <div className="mx-auto flex max-w-4xl flex-col items-center">
+        {/* Conference name tag sticker */}
+        <div className="nametag">
+          <div className="nametag-red">
+            <span className="nametag-hello">HELLO</span>
+            <span className="nametag-subtitle">my name is</span>
+          </div>
+          <div className="nametag-white">
+            <span className="nametag-name">Rob</span>
+          </div>
+        </div>
+
+        <p className="mt-8 mb-10 text-xl text-gray-500 max-sm:text-base dark:text-gray-400">
           Software Developer &amp; Creative Problem Solver
         </p>
         <div className="flex flex-wrap justify-center gap-4">
