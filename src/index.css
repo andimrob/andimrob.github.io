@@ -171,55 +171,51 @@
 /* ---- Name Tag Sticker (Hero) ---- */
 
 .nametag {
-  aspect-ratio: 7 / 5;
+  aspect-ratio: 4 / 3;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
-  border: 4px solid #dc2626;
-  border-radius: 12px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #fff;
+  background: #c0392b;
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.12),
-    0 2px 6px rgba(0, 0, 0, 0.06);
-  transform: rotate(-1.5deg);
+    0 10px 30px rgba(0, 0, 0, 0.14),
+    0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .nametag-red {
-  background: #dc2626;
+  background: #c0392b;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 10px 16px 6px;
-  flex: 0 0 42%;
+  padding: 20px 28px 10px;
+  flex: 0 0 44%;
 }
 
 .nametag-hello {
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 2.8rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  line-height: 1.15;
+  line-height: 1;
 }
 
 .nametag-subtitle {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.05rem;
   font-weight: 400;
-  letter-spacing: 0.06em;
   line-height: 1.3;
-  margin-top: 1px;
+  margin-top: 4px;
 }
 
 .nametag-white {
-  flex: 1;
+  flex: 0 0 46%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: #f5f0eb;
 }
 
 .nametag-name {
