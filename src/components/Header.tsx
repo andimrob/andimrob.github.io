@@ -370,7 +370,7 @@ function Header() {
   return (
     <div className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
       <div
-        className={`prism-perspective mx-auto max-w-5xl ${jitter ? "prism-jitter" : ""}`}
+        className={`prism-perspective mx-auto max-w-4xl ${jitter ? "prism-jitter" : ""}`}
         onAnimationEnd={() => setJitter(false)}
       >
         <div
