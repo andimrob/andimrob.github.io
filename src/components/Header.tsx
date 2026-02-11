@@ -405,7 +405,7 @@ function Header() {
                     onClick={(e) => e.stopPropagation()}
                     className={`pb-1 text-sm font-medium transition-colors ${
                       active === s.id
-                        ? "text-gray-900 dark:text-white"
+                        ? "nav-active-gradient"
                         : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                     }`}
                   >
@@ -414,7 +414,7 @@ function Header() {
                 ))}
                 <span
                   ref={underlineRef}
-                  className="absolute bottom-0 h-[2px] bg-gray-900 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] dark:bg-white"
+                  className="absolute bottom-0 h-[2px] nav-active-underline transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
                 />
               </div>
 
@@ -447,9 +447,9 @@ function Header() {
                         opacity: isActive ? 1 : 0,
                       }}
                     >
-                      <span className="relative pb-1">
+                      <span className={`relative pb-1 ${isActive ? "nav-active-gradient" : ""}`}>
                         {s.label}
-                        <span className="absolute bottom-0 left-0 h-[2px] w-full bg-gray-900 dark:bg-white" />
+                        <span className="absolute bottom-0 left-0 h-[2px] w-full nav-active-underline" />
                       </span>
                     </span>
                   );

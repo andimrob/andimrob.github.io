@@ -367,6 +367,28 @@
   }
 }
 
+/* ---- Nav Active Gradient Text ---- */
+
+.nav-active-gradient {
+  background: linear-gradient(135deg, #06b6d4, #0ea5e9, #3b82f6, #ec4899, #f43f5e);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nav-gradient-shift 3s ease infinite;
+}
+
+@keyframes nav-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.nav-active-underline {
+  background: linear-gradient(90deg, #06b6d4, #0ea5e9, #3b82f6, #ec4899, #f43f5e);
+  background-size: 200% 200%;
+  animation: nav-gradient-shift 3s ease infinite;
+}
+
 /* ---- Typewriter Cursor ---- */
 
 @keyframes blink-caret {
