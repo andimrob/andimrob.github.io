@@ -8,7 +8,7 @@ function Hero() {
   );
 
   return (
-    <section className="px-6 pt-30 pb-24">
+    <section className="px-6 pt-30 pb-24 md:pb-14">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-12 md:flex-row md:items-center md:justify-between">
         {/* Left column — name, tagline, social links */}
         <div className="text-center md:text-left">
