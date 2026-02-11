@@ -29,7 +29,7 @@
 }
 
 .prism {
-  --prism-h: 3.5rem;
+  --prism-h: 5rem;
   position: relative;
   height: var(--prism-h);
   transform-style: preserve-3d;
@@ -166,6 +166,64 @@
 @keyframes gold-gleam {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+/* ---- Name Tag Sticker ---- */
+
+.nametag-sticker {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #dc2626;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.nametag-red {
+  background: #dc2626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 16px 2px;
+  flex-shrink: 0;
+}
+
+.nametag-hello {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.nametag-mynameis {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.nametag-white {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 24px;
+  background: white;
+  min-height: 0;
+}
+
+.nametag-name {
+  font-family: "Caveat", cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1;
+  transform: rotate(-2deg);
 }
 
 /* ---- Typewriter Cursor ---- */
