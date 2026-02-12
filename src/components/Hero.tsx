@@ -81,26 +81,6 @@ function Hero() {
               </svg>
             </a>
 
-            {/* Email */}
-            <a
-              href="mailto:hello@andimrob.com"
-              aria-label="Email"
-              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 text-gray-500 transition-colors hover:border-primary hover:text-primary dark:border-gray-700 dark:text-gray-400 dark:hover:border-primary dark:hover:text-primary"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-                aria-hidden="true"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-            </a>
           </div>
         </div>
 
