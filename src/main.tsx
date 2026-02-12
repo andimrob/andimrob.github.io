@@ -89,9 +89,7 @@ window.addEventListener("load", () => {
 
   // Animated favicon — cycle through frames
   const faviconFrames = ["/ed-1.ico", "/ed-2.ico", "/ed-3.ico", "/ed-4.ico"];
-  const faviconEl = document.querySelector<HTMLLinkElement>(
-    'link[rel="icon"]',
-  );
+  const faviconEl = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
   if (faviconEl) {
     let i = 0;
     setInterval(() => {
