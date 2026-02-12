@@ -1,4 +1,3 @@
-import CursiveRob from "./CursiveRob";
 import { useTypewriter } from "../hooks/useTypewriter";
 
 function Hero() {
@@ -90,7 +89,9 @@ function Hero() {
             <span className="nametag-subtitle">my name is</span>
           </div>
           <div className="nametag-white">
-            <CursiveRob className="nametag-name" />
+            <span className="nametag-name" aria-label="Rob">
+              Rob
+            </span>
           </div>
           <div className="nametag-bottom" />
         </div>
