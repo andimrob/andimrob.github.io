@@ -16,7 +16,7 @@ function RevealSection({ children, className = "", id }: Props) {
       id={id}
       className={`scroll-mt-24 py-14 max-sm:py-10 ${className} reveal ${visible ? "revealed" : ""}`}
     >
-      {children}
+      <div className="mx-auto max-w-4xl px-6">{children}</div>
     </section>
   );
 }
