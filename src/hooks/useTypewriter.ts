@@ -12,7 +12,9 @@ export function useTypewriter(
     cursorLingerMs = 1500,
   }: { delay?: number; speed?: number; cursorLingerMs?: number } = {},
 ) {
-  const [displayed, setDisplayed] = useState("");
+  const [displayed, setDisplayed] = useState(() =>
+    typeof window === "undefined" ? text : "",
+  );
   const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {

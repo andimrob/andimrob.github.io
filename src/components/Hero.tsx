@@ -17,6 +17,7 @@ function Hero() {
               {fullName}
             </span>
             <span
+              suppressHydrationWarning
               className={`absolute inset-0${nameCursor ? " typewriter-cursor" : ""}`}
             >
               {typedName}

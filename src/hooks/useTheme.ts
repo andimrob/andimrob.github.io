@@ -14,6 +14,7 @@ function applyTheme(theme: Theme) {
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "dark";
     const stored = localStorage.getItem("theme") as Theme | null;
     return stored ?? getSystemTheme();
   });
