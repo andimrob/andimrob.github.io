@@ -59,6 +59,7 @@ typings/
 .vite/
 public
 tsconfig.tsbuildinfo
+storybook-static/
 
 # Mac files
 .DS_Store
