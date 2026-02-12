@@ -1,4 +1,5 @@
 import RevealSection from "./RevealSection";
+import SectionHeading from "./SectionHeading";
 
 const skills = [
   { category: "Frontend", items: ["React", "TypeScript", "HTML/CSS", "Vite"] },
@@ -26,32 +27,28 @@ const categoryColors: Record<string, string> = {
 function Experience() {
   return (
     <RevealSection id="experience">
-      <div className="mx-auto max-w-4xl px-6">
-        <h2 className="relative mb-8 inline-block text-2xl font-bold after:absolute after:-bottom-1.5 after:left-0 after:h-[3px] after:w-12 after:rounded-full after:bg-primary">
-          Experience
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {skills.map((group) => (
-            <div
-              key={group.category}
-              className="rounded-xl bg-gray-50 p-5 dark:bg-gray-900"
-            >
-              <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-                {group.category}
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${categoryColors[group.category]}`}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+      <SectionHeading>Experience</SectionHeading>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {skills.map((group) => (
+          <div
+            key={group.category}
+            className="rounded-xl bg-gray-50 p-5 dark:bg-gray-900"
+          >
+            <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
+              {group.category}
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {group.items.map((item) => (
+                <span
+                  key={item}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${categoryColors[group.category]}`}
+                >
+                  {item}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </RevealSection>
   );
