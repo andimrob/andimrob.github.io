@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { onXRayChange, mouseX, mouseY } from "../xray";
+import { onXRayChange, getMousePosition } from "../xray";
 
 function CursorGlow() {
   const ref = useRef<HTMLDivElement>(null);
@@ -7,7 +7,9 @@ function CursorGlow() {
 
   useEffect(() => {
     const unsub = onXRayChange(setXrayActive);
-    return () => { unsub(); };
+    return () => {
+      unsub();
+    };
   }, []);
 
   useEffect(() => {
@@ -24,12 +26,14 @@ function CursorGlow() {
     };
 
     // Immediately restore glow at current shared mouse position
-    if (mouseX !== -300) {
-      setGlow(mouseX, mouseY);
+    const pos = getMousePosition();
+    if (pos.x !== -300) {
+      setGlow(pos.x, pos.y);
     }
 
     const handleMouseMove = () => {
-      setGlow(mouseX, mouseY);
+      const { x, y } = getMousePosition();
+      setGlow(x, y);
     };
 
     const handleMouseLeave = () => {

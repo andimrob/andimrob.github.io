@@ -50,8 +50,12 @@ let xrayBlur: HTMLElement | null = null;
 let xrayOverlay: HTMLElement | null = null;
 let xrayInner: HTMLElement | null = null;
 let xrayRing: HTMLElement | null = null;
-export let mouseX = -300;
-export let mouseY = -300;
+let mouseX = -300;
+let mouseY = -300;
+
+export function getMousePosition() {
+  return { x: mouseX, y: mouseY };
+}
 let cachedSourceHTML: string | null = null;
 
 function esc(s: string): string {
