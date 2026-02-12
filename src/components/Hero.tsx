@@ -2,8 +2,9 @@ import CursiveRob from "./CursiveRob";
 import { useTypewriter } from "../hooks/useTypewriter";
 
 function Hero() {
+  const fullName = "Robert Blakey";
   const { displayed: typedName, showCursor: nameCursor } = useTypewriter(
-    "Robert Blakey",
+    fullName,
     { delay: 500, speed: 80 },
   );
 
@@ -12,10 +13,15 @@ function Hero() {
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-12 md:flex-row md:items-center md:justify-between">
         {/* Left column — name, tagline, social links */}
         <div className="text-center md:text-left">
-          <h1
-            className={`text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl${nameCursor ? " typewriter-cursor" : ""}`}
-          >
-            {typedName}
+          <h1 className="relative inline-block text-left text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            <span className="invisible" aria-hidden="true">
+              {fullName}
+            </span>
+            <span
+              className={`absolute inset-0${nameCursor ? " typewriter-cursor" : ""}`}
+            >
+              {typedName}
+            </span>
           </h1>
           <p className="hero-tagline mt-4">
             Software Engineer &amp; Creative Problem Solver
