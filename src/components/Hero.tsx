@@ -47,7 +47,7 @@ function Hero() {
 
             {/* Bluesky */}
             <a
-              href="#"
+              href="https://bsky.app/profile/robertblakey.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Bluesky"
@@ -65,7 +65,7 @@ function Hero() {
 
             {/* LinkedIn */}
             <a
-              href="#"
+              href="https://www.linkedin.com/in/robblakey/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
