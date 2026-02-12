@@ -53,6 +53,56 @@ function QuipFace({
   );
 }
 
+const DEFAULT_QUIP_BG = "bg-gray-950 dark:bg-white";
+
+const quipBgs: string[] = [
+  "prism-bg-coral",
+  "prism-bg-turquoise",
+  DEFAULT_QUIP_BG,
+  "prism-bg-deepspace",
+  DEFAULT_QUIP_BG,
+  "prism-bg-lava",
+  "prism-bg-vaporwave",
+  DEFAULT_QUIP_BG,
+  "prism-bg-aurora",
+  "prism-bg-ocean",
+  DEFAULT_QUIP_BG,
+  DEFAULT_QUIP_BG,
+  "prism-bg-deepspace",
+  "prism-bg-lava",
+  DEFAULT_QUIP_BG,
+  "prism-bg-ocean",
+  "prism-bg-holographic",
+  "prism-bg-aurora",
+  "prism-bg-vaporwave",
+  "prism-bg-lava",
+  "prism-bg-deepspace",
+  "prism-bg-holographic",
+  "prism-bg-aurora",
+  "prism-bg-holographic",
+  "prism-bg-ocean",
+  "prism-bg-deepspace",
+  "prism-bg-vaporwave",
+  "prism-bg-lava",
+  DEFAULT_QUIP_BG,
+  "prism-bg-aurora",
+  "prism-bg-deepspace",
+  "prism-bg-ocean",
+  "prism-bg-holographic",
+  "prism-bg-vaporwave",
+  "prism-bg-aurora",
+  "prism-bg-vaporwave",
+  "prism-bg-lava",
+  "prism-bg-lava",
+  DEFAULT_QUIP_BG,
+  DEFAULT_QUIP_BG,
+  "prism-bg-deepspace",
+  "prism-bg-deepspace",
+  "prism-bg-holographic",
+  "prism-bg-ocean",
+  "prism-bg-gold",
+];
+
 const quips: ReactNode[] = [
   <QuipFace bg="prism-bg-coral" text="text-white">
     {"\u{1F44B}"} You found the secret! Keep going!
@@ -206,6 +256,7 @@ function Header() {
   const [jitter, setJitter] = useState(false);
   const [peek, setPeek] = useState(false);
   const [quip, setQuip] = useState<ReactNode>(quips[0]);
+  const [faceBg, setFaceBg] = useState(quipBgs[0]);
   const hasInteracted = useRef(false);
   const { theme, toggle } = useTheme();
   const active = useActiveSection(sectionIds);
@@ -266,6 +317,7 @@ function Header() {
         // teasing the user that there's more to discover.
         const nextIdx = count % quips.length;
         setQuip(quips[nextIdx]);
+        setFaceBg(quipBgs[nextIdx]);
         requestAnimationFrame(() => setFlipped(false));
       }, AUTO_ROTATE_BACK_MS);
     }
@@ -357,6 +409,7 @@ function Header() {
     };
   }, []);
 
+  const isGradientBg = faceBg.startsWith("prism-bg-");
   const prismClass = `prism ${flipped ? "prism-flipped" : ""} ${peek ? "prism-peek" : ""}`;
 
   return (
@@ -378,10 +431,7 @@ function Header() {
             <div />
 
             {/* Centered nav links */}
-            <div
-              ref={navRef}
-              className="relative flex items-center gap-6"
-            >
+            <div ref={navRef} className="relative flex items-center gap-6">
               {sections.map((s) => (
                 <a
                   key={s.id}
@@ -392,7 +442,7 @@ function Header() {
                   onClick={(e) => e.stopPropagation()}
                   className={`pb-1 text-sm font-medium transition-colors ${
                     active === s.id
-                      ? "nav-active-gradient"
+                      ? "text-gray-900 dark:text-white"
                       : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                   }`}
                 >
@@ -401,7 +451,9 @@ function Header() {
               ))}
               <span
                 ref={underlineRef}
-                className="absolute bottom-0 h-[2px] nav-active-underline transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                className={`absolute bottom-0 h-[2px] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                  isGradientBg ? faceBg : "bg-gray-900 dark:bg-white"
+                }`}
               />
             </div>
 
@@ -454,14 +506,16 @@ function Header() {
 
           {/* Top Face — Easter egg */}
           <div
-            className="prism-face prism-top cursor-pointer"
+            className="prism-face prism-top cursor-pointer dark:border dark:border-gray-800"
             onClick={handleFlip}
           >
             {quip}
           </div>
 
           {/* Bottom Face */}
-          <div className="prism-face prism-bottom flex items-center justify-center bg-gray-950 px-6 dark:bg-white"></div>
+          <div
+            className={`prism-face prism-bottom flex items-center justify-center px-6 ${faceBg} dark:border dark:border-gray-800`}
+          ></div>
         </div>
       </div>
     </div>
