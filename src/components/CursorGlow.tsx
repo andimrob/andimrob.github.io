@@ -22,7 +22,7 @@ function CursorGlow() {
     }
 
     const setGlow = (x: number, y: number) => {
-      el.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(120, 140, 255, 0.07), transparent 70%)`;
+      el.style.background = `radial-gradient(900px circle at ${x}px ${y}px, rgba(120, 140, 255, 0.07), transparent 70%)`;
     };
 
     // Immediately restore glow at current shared mouse position
