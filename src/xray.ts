@@ -102,7 +102,7 @@ const JS_RULES: Rule[] = [
   [/\.[\w$]+/, C.teal],
   [/\b\d+\.?\d*(?:e[+-]?\d+)?\b/i, C.peach],
   [/=>/, C.mauve],
-  [/[{}()\[\];,]/, C.overlay],
+  [/[{}()[\];,]/, C.overlay],
 ];
 
 function compact(code: string): string {

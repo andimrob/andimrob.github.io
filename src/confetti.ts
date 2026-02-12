@@ -1,4 +1,11 @@
-const COLORS = ["#2563eb", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
+const COLORS = [
+  "#2563eb",
+  "#f59e0b",
+  "#10b981",
+  "#ef4444",
+  "#8b5cf6",
+  "#ec4899",
+];
 const PARTICLE_COUNT = 120;
 
 interface Particle {
