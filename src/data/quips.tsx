@@ -25,7 +25,14 @@ export function QuipFace({
     <div
       className={`relative flex h-full w-full items-center justify-center overflow-hidden px-6 ${bg}`}
     >
-      <span className={`relative z-10 text-sm font-medium ${text}`}>
+      <span
+        className={`relative z-10 text-sm font-medium ${text}`}
+        style={
+          bg.startsWith("prism-bg-")
+            ? { textShadow: "0 1px 4px rgba(0,0,0,0.45)" }
+            : undefined
+        }
+      >
         {children}
       </span>
     </div>
@@ -37,19 +44,19 @@ export const DEFAULT_QUIP_BG = "bg-gray-950 dark:bg-white";
 export const quipBgs: string[] = [
   "prism-bg-coral",
   "prism-bg-turquoise",
-  DEFAULT_QUIP_BG,
-  "prism-bg-deepspace",
-  DEFAULT_QUIP_BG,
+  "prism-bg-bubblegum",
+  "prism-bg-lava",
+  "prism-bg-ember",
   "prism-bg-lava",
   "prism-bg-vaporwave",
-  DEFAULT_QUIP_BG,
+  "prism-bg-copper",
   "prism-bg-aurora",
   "prism-bg-ocean",
-  DEFAULT_QUIP_BG,
-  DEFAULT_QUIP_BG,
+  "prism-bg-neon",
+  "prism-bg-sunset",
   "prism-bg-deepspace",
-  "prism-bg-lava",
-  DEFAULT_QUIP_BG,
+  "prism-bg-deepspace",
+  "prism-bg-arctic",
   "prism-bg-ocean",
   "prism-bg-holographic",
   "prism-bg-aurora",
@@ -62,21 +69,21 @@ export const quipBgs: string[] = [
   "prism-bg-ocean",
   "prism-bg-deepspace",
   "prism-bg-vaporwave",
-  "prism-bg-lava",
-  DEFAULT_QUIP_BG,
+  "prism-bg-magma",
+  "prism-bg-toxic",
   "prism-bg-aurora",
   "prism-bg-deepspace",
   "prism-bg-ocean",
   "prism-bg-holographic",
   "prism-bg-vaporwave",
-  "prism-bg-aurora",
-  "prism-bg-vaporwave",
+  "prism-bg-ember",
+  "prism-bg-sunset",
   "prism-bg-lava",
-  "prism-bg-lava",
-  DEFAULT_QUIP_BG,
-  DEFAULT_QUIP_BG,
+  "prism-bg-neon",
+  "prism-bg-bubblegum",
+  "prism-bg-copper",
   "prism-bg-deepspace",
-  "prism-bg-deepspace",
+  "prism-bg-arctic",
   "prism-bg-holographic",
   "prism-bg-ocean",
   "prism-bg-gold",
@@ -89,18 +96,23 @@ export const quips: ReactNode[] = [
   <QuipFace bg="prism-bg-turquoise" text="text-gray-900">
     {"\u{1F914}"} You{"\u2019"}re the curious type, huh?
   </QuipFace>,
-  <QuipFace>{"\u{1F91D}"} Honestly, same. </QuipFace>,
-  <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
-    {"\u{1F47E}"} Insert coin to continue{"\u2026"}
+  <QuipFace bg="prism-bg-bubblegum" text="text-white">
+    {"\u{1F91D}"} Honestly, same.
   </QuipFace>,
-  <QuipFace>{"\u{1F3C6}"} Achievement unlocked: bar flipper!</QuipFace>,
+  <QuipFace bg="prism-bg-lava" text="text-orange-100">
+    {"\u{1F5A5}\u{FE0F}"} Ever wanted to{" "}
+    {link("https://hackertyper.net", "feel like a hacker")}?
+  </QuipFace>,
+  <QuipFace bg="prism-bg-ember" text="text-white">
+    {"\u{1F3C6}"} Achievement unlocked: bar flipper!
+  </QuipFace>,
   <QuipFace bg="prism-bg-lava" text="text-orange-100">
     {"\u{1F60E}"} Okay you{"\u2019"}re committed. I respect that
   </QuipFace>,
   <QuipFace bg="prism-bg-vaporwave" text="text-white">
     {"\u{1F3B5}"} Click me baby, one more time!
   </QuipFace>,
-  <QuipFace>
+  <QuipFace bg="prism-bg-copper" text="text-orange-100">
     {"\u{1F4AD}"} I wonder what the next one says{"\u2026"}
   </QuipFace>,
   <QuipFace bg="prism-bg-aurora" text="text-cyan-100">
@@ -109,19 +121,22 @@ export const quips: ReactNode[] = [
   <QuipFace bg="prism-bg-ocean" text="text-cyan-100">
     {"\u{1F389}"} Double digits! You{"\u2019"}re officially dedicated
   </QuipFace>,
-  <QuipFace>{"\u{2728}"} 𝑺𝑬𝑬 𝒀𝑶𝑼 𝑺𝑷𝑨𝑪𝑬 𝑪𝑶𝑾𝑩𝑶𝒀 . . .</QuipFace>,
-  <QuipFace>
+  <QuipFace bg="prism-bg-neon" text="text-green-300">
+    {"\u{2728}"} 𝑺𝑬𝑬 𝒀𝑶𝑼 𝑺𝑷𝑨𝑪𝑬 𝑪𝑶𝑾𝑩𝑶𝒀 . . .
+  </QuipFace>,
+  <QuipFace bg="prism-bg-sunset" text="text-white">
     {"\u{1F30A}"} You look tense. Maybe{" "}
     {link("https://fallingfalling.com", "just let go")}?
   </QuipFace>,
   <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
     {"\u{1F916}"} Beep boop. I have achieved consciousness.
   </QuipFace>,
-  <QuipFace bg="prism-bg-lava" text="text-orange-100">
-    {"\u{1F5A5}\u{FE0F}"} Ever wanted to{" "}
-    {link("https://hackertyper.net", "feel like a hacker")}?
+  <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
+    {"\u{1F47E}"} Insert coin to continue{"\u2026"}
   </QuipFace>,
-  <QuipFace>{"\u{1F423}"} A wild easter egg appeared!</QuipFace>,
+  <QuipFace bg="prism-bg-arctic" text="text-sky-900">
+    {"\u{1F423}"} A wild easter egg appeared!
+  </QuipFace>,
   <QuipFace bg="prism-bg-ocean" text="text-cyan-100">
     {"\u{1F40B}"} This bar flips more than a dolphin at SeaWorld
   </QuipFace>,
@@ -169,7 +184,7 @@ export const quips: ReactNode[] = [
     {"\u{1FA66}"} There's more to life than{" "}
     {link("https://burymewithmymoney.com/", "money")}
   </QuipFace>,
-  <QuipFace>
+  <QuipFace bg="prism-bg-toxic" text="text-green-200">
     {"\u{1F611}"} It's about{" "}
     {link("https://www.muchbetterthanthis.com/", "love and connection")}
   </QuipFace>,
@@ -206,10 +221,12 @@ export const quips: ReactNode[] = [
   <QuipFace bg="prism-bg-lava" text="text-orange-100">
     {"\u{1F525}"} We didn{"\u2019"}t start the fire. Actually, you did.
   </QuipFace>,
-  <QuipFace>
+  <QuipFace bg="prism-bg-bubblegum" text="text-white">
     {"\u{1F92A}"} Emojis, but {link("https://remoji.com/", "worse")}
   </QuipFace>,
-  <QuipFace>{"\u{1F50D}"} 404: productivity not found</QuipFace>,
+  <QuipFace bg="prism-bg-copper" text="text-orange-100">
+    {"\u{1F50D}"} 404: productivity not found
+  </QuipFace>,
   <QuipFace bg="prism-bg-deepspace" text="text-purple-200">
     {"\u{1F680}"} One small click for man. One giant waste of time.
   </QuipFace>,

@@ -276,6 +276,177 @@
   }
 }
 
+/* Ember — warm amber to rose glow */
+.prism-bg-ember {
+  background: linear-gradient(135deg, #f97316, #ef4444, #ec4899, #f59e0b);
+  background-size: 300% 300%;
+  animation: ember-flicker 3.5s ease infinite;
+}
+@keyframes ember-flicker {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Neon — electric cyberpunk green/magenta */
+.prism-bg-neon {
+  background: linear-gradient(
+    135deg,
+    #0d0d0d,
+    #39ff14,
+    #ff00ff,
+    #00fff7,
+    #0d0d0d
+  );
+  background-size: 400% 100%;
+  animation: neon-strobe 3s linear infinite;
+}
+@keyframes neon-strobe {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 400% 50%;
+  }
+}
+
+/* Sunset — warm dusk sky gradient */
+.prism-bg-sunset {
+  background: linear-gradient(
+    135deg,
+    #1a1a2e,
+    #e94560,
+    #f5a623,
+    #ffd700,
+    #e94560,
+    #1a1a2e
+  );
+  background-size: 300% 100%;
+  animation: sunset-glow 5s ease infinite;
+}
+@keyframes sunset-glow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Bubblegum — playful pink/purple/blue */
+.prism-bg-bubblegum {
+  background: linear-gradient(135deg, #ff6a88, #ff99ac, #a78bfa, #60a5fa);
+  background-size: 300% 300%;
+  animation: bubblegum-pop 4s ease infinite;
+}
+@keyframes bubblegum-pop {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Toxic — acid green to electric purple */
+.prism-bg-toxic {
+  background: linear-gradient(
+    135deg,
+    #0a0a0a,
+    #84cc16,
+    #22d3ee,
+    #a855f7,
+    #0a0a0a
+  );
+  background-size: 300% 100%;
+  animation: toxic-pulse 4s ease infinite;
+}
+@keyframes toxic-pulse {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Copper — warm metallic shimmer */
+.prism-bg-copper {
+  background: linear-gradient(
+    135deg,
+    #4a2c17,
+    #b87333,
+    #da8a67,
+    #b87333,
+    #4a2c17
+  );
+  background-size: 300% 100%;
+  animation: copper-sheen 3s ease infinite;
+}
+@keyframes copper-sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Arctic — icy blue to frost white */
+.prism-bg-arctic {
+  background: linear-gradient(
+    135deg,
+    #0c4a6e,
+    #38bdf8,
+    #e0f2fe,
+    #7dd3fc,
+    #0c4a6e
+  );
+  background-size: 300% 100%;
+  animation: arctic-chill 5s ease infinite;
+}
+@keyframes arctic-chill {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Magma — deep molten earth */
+.prism-bg-magma {
+  background: linear-gradient(
+    135deg,
+    #1a0000,
+    #831843,
+    #dc2626,
+    #fbbf24,
+    #dc2626,
+    #1a0000
+  );
+  background-size: 400% 100%;
+  animation: magma-churn 3.5s ease infinite;
+}
+@keyframes magma-churn {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 /* ---- Name Tag Sticker (Hero) ---- */
 
 .nametag {
