@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import { onXRayChange, getMousePosition } from "../xray";
+import { useEffect, useRef } from "react";
+import type { MousePosition } from "../xray/useMousePosition";
 
-function CursorGlow() {
+interface CursorGlowProps {
+  xrayActive: boolean;
+  getMousePosition: () => MousePosition;
+}
+
+function CursorGlow({ xrayActive, getMousePosition }: CursorGlowProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [xrayActive, setXrayActive] = useState(false);
-
-  useEffect(() => {
-    const unsub = onXRayChange(setXrayActive);
-    return () => {
-      unsub();
-    };
-  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -46,7 +43,7 @@ function CursorGlow() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [xrayActive]);
+  }, [xrayActive, getMousePosition]);
 
   return (
     <div
