@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -6,13 +5,17 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Footer from "./components/Footer";
 import CursorGlow from "./components/CursorGlow";
-import { initXRay } from "./xray";
+import { useMousePosition } from "./xray/useMousePosition";
+import { useXRay } from "./xray/useXRay";
+import XRayOverlay from "./xray/XRayOverlay";
 
 function App() {
-  useEffect(() => initXRay(), []);
+  const getMousePosition = useMousePosition();
+  const { xrayActive, sourceHTML } = useXRay();
+
   return (
     <>
-      <CursorGlow />
+      <CursorGlow xrayActive={xrayActive} getMousePosition={getMousePosition} />
       <Header />
       <main>
         <Hero />
@@ -21,6 +24,12 @@ function App() {
         <Projects />
       </main>
       <Footer />
+      {xrayActive && sourceHTML && (
+        <XRayOverlay
+          sourceHTML={sourceHTML}
+          getMousePosition={getMousePosition}
+        />
+      )}
     </>
   );
 }
