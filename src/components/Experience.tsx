@@ -3,14 +3,14 @@ import SectionHeading from "./SectionHeading";
 
 const skills = [
   { category: "Frontend", items: ["React", "TypeScript", "HTML/CSS", "Vite"] },
-  { category: "Backend", items: ["Node.js", "Python", "REST APIs", "SQL"] },
+  { category: "Backend", items: ["Ruby", "Rails", "Go", "Node.js", "PostgreSQL", "REST APIs", "GraphQL"] },
   {
     category: "Tools & DevOps",
-    items: ["Git", "Docker", "CI/CD", "AWS"],
+    items: ["Git", "Bash", "Linux", "Docker", "CI/CD", "AWS"],
   },
   {
     category: "Practices",
-    items: ["Agile", "Testing", "Code Review", "Documentation"],
+    items: ["Agile", "TDD", "A/B Testing", "Testing", "Code Review", "Documentation"],
   },
 ];
 
