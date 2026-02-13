@@ -82,6 +82,107 @@ describe("useActiveSection", () => {
     expect(result.current).toBe("about");
   });
 
+  it("selects the last section when multiple are above threshold", () => {
+    const aEl = document.createElement("div");
+    aEl.id = "a";
+    document.body.appendChild(aEl);
+
+    const bEl = document.createElement("div");
+    bEl.id = "b";
+    document.body.appendChild(bEl);
+
+    const cEl = document.createElement("div");
+    cEl.id = "c";
+    document.body.appendChild(cEl);
+
+    // All three sections are above threshold (top <= 400)
+    vi.spyOn(aEl, "getBoundingClientRect").mockReturnValue({
+      top: -200,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    vi.spyOn(bEl, "getBoundingClientRect").mockReturnValue({
+      top: 100,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    vi.spyOn(cEl, "getBoundingClientRect").mockReturnValue({
+      top: 300,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+
+    const { result } = renderHook(() => useActiveSection(["a", "b", "c"]));
+
+    act(() => {
+      scrollHandler?.();
+    });
+
+    // Last qualifying section wins
+    expect(result.current).toBe("c");
+  });
+
+  it("does not select a section whose top is above the 40% threshold", () => {
+    const topEl = document.createElement("div");
+    topEl.id = "top";
+    document.body.appendChild(topEl);
+
+    const botEl = document.createElement("div");
+    botEl.id = "bot";
+    document.body.appendChild(botEl);
+
+    vi.spyOn(topEl, "getBoundingClientRect").mockReturnValue({
+      top: 200,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    // top = 401 — just above threshold of 400 (0.4 * 1000)
+    vi.spyOn(botEl, "getBoundingClientRect").mockReturnValue({
+      top: 401,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+
+    const { result } = renderHook(() => useActiveSection(["top", "bot"]));
+
+    act(() => {
+      scrollHandler?.();
+    });
+
+    // "top" qualifies (200 <= 400), "bot" does not (401 > 400)
+    expect(result.current).toBe("top");
+  });
+
   it("handles missing DOM elements gracefully", () => {
     // No elements in DOM — should still return first ID
     const { result } = renderHook(() =>

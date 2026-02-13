@@ -103,6 +103,46 @@ describe("usePrismFlip", () => {
     expect(fireConfetti).toHaveBeenCalled();
   });
 
+  it("auto-rotates back after 2 seconds", () => {
+    const { result } = renderHook(() => usePrismFlip(quips, quipBgs));
+
+    act(() => {
+      result.current.handleFlip(makeMouseEvent());
+    });
+    expect(result.current.flipped).toBe(true);
+
+    // Advance past AUTO_ROTATE_BACK_MS (2000ms)
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+
+    // requestAnimationFrame fires on next frame
+    act(() => {
+      vi.advanceTimersByTime(16);
+    });
+
+    expect(result.current.flipped).toBe(false);
+  });
+
+  it("updates faceBg when auto-rotating", () => {
+    const { result } = renderHook(() => usePrismFlip(quips, quipBgs));
+
+    // Initial faceBg is quipBgs[0]
+    expect(result.current.faceBg).toBe("bg-0");
+
+    act(() => {
+      result.current.handleFlip(makeMouseEvent());
+    });
+
+    // After auto-rotate timeout, faceBg updates to next index
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+
+    // flipCount=1, nextIdx = 1 % 6 = 1
+    expect(result.current.faceBg).toBe("bg-1");
+  });
+
   it("wraps quip index when exceeding quips length", () => {
     const shortQuips = ["a", "b"];
     const shortBgs = ["bg-a", "bg-b"];

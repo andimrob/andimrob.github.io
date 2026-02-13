@@ -8,6 +8,8 @@ vi.mock("./highlight", () => ({
   buildSource: vi.fn().mockResolvedValue("<span>mock source</span>"),
 }));
 
+import { ensureFont, buildSource } from "./highlight";
+
 describe("useXRay", () => {
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
@@ -34,7 +36,7 @@ describe("useXRay", () => {
     expect(result.current.sourceHTML).toBeNull();
   });
 
-  it("toggles xray on 'x' key press", async () => {
+  it("toggles xray on 'x' key press and loads source", async () => {
     const { result } = renderHook(() => useXRay());
 
     await act(async () => {
@@ -48,6 +50,25 @@ describe("useXRay", () => {
     });
 
     expect(result.current.xrayActive).toBe(true);
+    expect(ensureFont).toHaveBeenCalled();
+    expect(buildSource).toHaveBeenCalled();
+    expect(result.current.sourceHTML).toBe("<span>mock source</span>");
+  });
+
+  it("ignores non-x keys", () => {
+    const { result } = renderHook(() => useXRay());
+
+    act(() => {
+      keydownHandler?.({
+        key: "y",
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        target: document.createElement("div"),
+      } as unknown as KeyboardEvent);
+    });
+
+    expect(result.current.xrayActive).toBe(false);
   });
 
   it("ignores 'x' when modifier keys are held", () => {
@@ -94,6 +115,23 @@ describe("useXRay", () => {
         metaKey: false,
         altKey: false,
         target: textarea,
+      } as unknown as KeyboardEvent);
+    });
+
+    expect(result.current.xrayActive).toBe(false);
+  });
+
+  it("ignores 'x' when focused on select element", () => {
+    const { result } = renderHook(() => useXRay());
+
+    const select = document.createElement("select");
+    act(() => {
+      keydownHandler?.({
+        key: "x",
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        target: select,
       } as unknown as KeyboardEvent);
     });
 

@@ -85,8 +85,9 @@ describe("useMagneticTilt", () => {
       clientY: 130,
     } as MouseEvent);
 
-    expect(el.style.transform).toContain("rotateX");
-    expect(el.style.transform).toContain("rotateY");
+    expect(el.style.transform).toMatch(
+      /^rotateX\(-?\d+(\.\d+)?deg\) rotateY\(-?\d+(\.\d+)?deg\)$/,
+    );
   });
 
   it("clears transform when mouse is outside attract range", () => {
