@@ -6,13 +6,13 @@
 
 The project has testing tooling **installed but largely unused**:
 
-| Tool                        | Installed | Actively Used |
-| --------------------------- | --------- | ------------- |
-| Vitest 4.x                  | Yes       | Storybook only |
-| Playwright                  | Yes       | No standalone tests |
-| @vitest/coverage-v8         | Yes       | No            |
-| @storybook/addon-vitest     | Yes       | Yes (1 story) |
-| @storybook/addon-a11y       | Yes       | Not exercised in tests |
+| Tool                    | Installed | Actively Used          |
+| ----------------------- | --------- | ---------------------- |
+| Vitest 4.x              | Yes       | Storybook only         |
+| Playwright              | Yes       | No standalone tests    |
+| @vitest/coverage-v8     | Yes       | No                     |
+| @storybook/addon-vitest | Yes       | Yes (1 story)          |
+| @storybook/addon-a11y   | Yes       | Not exercised in tests |
 
 ### Existing Tests
 
@@ -33,11 +33,11 @@ The GitHub Actions workflow (`main.yml`) runs `format:check`, `lint`, `typecheck
 
 These have **zero tests** and are the easiest to cover since they're pure functions with no DOM or React dependencies:
 
-| File | Function | What It Does | Complexity |
-|------|----------|-------------|------------|
-| `src/xray/highlight.ts` | `esc()` | HTML-escapes `&`, `<`, `>` characters | Low |
-| `src/xray/highlight.ts` | `highlight()` | Applies syntax-highlighting rules via regex to source code strings | High |
-| `src/xray/highlight.ts` | `compact()` (private) | Strips comments and collapses whitespace | Medium |
+| File                    | Function              | What It Does                                                       | Complexity |
+| ----------------------- | --------------------- | ------------------------------------------------------------------ | ---------- |
+| `src/xray/highlight.ts` | `esc()`               | HTML-escapes `&`, `<`, `>` characters                              | Low        |
+| `src/xray/highlight.ts` | `highlight()`         | Applies syntax-highlighting rules via regex to source code strings | High       |
+| `src/xray/highlight.ts` | `compact()` (private) | Strips comments and collapses whitespace                           | Medium     |
 
 **Why this matters:** `highlight()` combines regex rules, string slicing, and HTML generation — a prime candidate for edge-case bugs (empty strings, overlapping regex groups, unterminated strings in input, etc.).
 
@@ -45,14 +45,14 @@ These have **zero tests** and are the easiest to cover since they're pure functi
 
 Six hooks with complex stateful/timer/DOM logic and zero test coverage:
 
-| Hook | Key Behaviors to Test |
-|------|----------------------|
-| `useTypewriter` | Typing animation timing, cursor visibility lifecycle, cleanup on unmount |
-| `useTheme` | localStorage persistence, system preference detection, toggle between light/dark, `matchMedia` listener cleanup |
-| `useActiveSection` | Scroll position -> active section mapping, handles missing DOM elements |
-| `usePrismFlip` | Flip counter logic, quip cycling/wrapping, auto-rotate-back timer, confetti/coin triggers at specific counts, mobile idle hints |
-| `useRevealOnScroll` | IntersectionObserver fires `visible` once, disconnects after first intersection |
-| `useMagneticTilt` | Tilt math within attract range, reset when out of range or disabled |
+| Hook                | Key Behaviors to Test                                                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `useTypewriter`     | Typing animation timing, cursor visibility lifecycle, cleanup on unmount                                                        |
+| `useTheme`          | localStorage persistence, system preference detection, toggle between light/dark, `matchMedia` listener cleanup                 |
+| `useActiveSection`  | Scroll position -> active section mapping, handles missing DOM elements                                                         |
+| `usePrismFlip`      | Flip counter logic, quip cycling/wrapping, auto-rotate-back timer, confetti/coin triggers at specific counts, mobile idle hints |
+| `useRevealOnScroll` | IntersectionObserver fires `visible` once, disconnects after first intersection                                                 |
+| `useMagneticTilt`   | Tilt math within attract range, reset when out of range or disabled                                                             |
 
 **Why this matters:** `usePrismFlip` is the most complex piece of logic in the codebase. It manages flip counts, quip index cycling, audio playback triggers, conditional confetti vs. coin effects, auto-rotate-back timers, and mobile idle animation. This is where regressions are most likely.
 
@@ -100,6 +100,7 @@ No tests exist for user interaction flows:
 ### Phase 2: Unit Tests for Pure Functions
 
 Target files:
+
 - `src/xray/highlight.test.ts` — Test `esc()`, `highlight()`, and regex rule correctness
   - Empty string input
   - Strings with `&`, `<`, `>` characters
@@ -110,6 +111,7 @@ Target files:
 ### Phase 3: Hook Tests
 
 Target files:
+
 - `src/hooks/useTypewriter.test.ts` — Fake timers to verify typing progression and cursor behavior
 - `src/hooks/useTheme.test.ts` — Mock `localStorage` and `matchMedia` to verify toggle and persistence
 - `src/hooks/useActiveSection.test.ts` — Mock `getBoundingClientRect` and scroll events
@@ -126,6 +128,7 @@ Target files:
 ### Phase 5: E2E Smoke Tests
 
 Playwright is already installed — add a minimal smoke test:
+
 - Page loads without console errors
 - X-ray mode toggles with the `x` key
 - Theme toggle switches classes on `<html>`
