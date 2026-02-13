@@ -147,7 +147,7 @@ function Header() {
 
           {/* Top Face — Easter egg */}
           <div
-            className="prism-face prism-top cursor-pointer dark:border dark:border-gray-800"
+            className="prism-face prism-top cursor-pointer"
             onClick={handleFlip}
           >
             {quip}
@@ -155,7 +155,7 @@ function Header() {
 
           {/* Bottom Face */}
           <div
-            className={`prism-face prism-bottom flex items-center justify-center px-6 ${faceBg} dark:border dark:border-gray-800`}
+            className={`prism-face prism-bottom flex items-center justify-center px-6 ${faceBg}`}
           ></div>
         </div>
       </div>
