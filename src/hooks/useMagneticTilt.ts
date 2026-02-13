@@ -1,8 +1,8 @@
 import { useEffect, type RefObject } from "react";
 
-const MAX_TILT_X = 80;
-const MAX_TILT_Y = 15;
-const ATTRACT_RANGE = 200;
+const MAX_TILT_X = 90;
+const MAX_TILT_Y = 45;
+const ATTRACT_RANGE = 250;
 
 export function useMagneticTilt(
   ref: RefObject<HTMLElement | null>,
