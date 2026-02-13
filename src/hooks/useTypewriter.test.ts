@@ -30,12 +30,14 @@ describe("useTypewriter", () => {
       vi.advanceTimersByTime(100);
     });
     expect(result.current.displayed).toBe("H");
+    expect(result.current.showCursor).toBe(true);
 
     // After one more speed interval — second character
     act(() => {
       vi.advanceTimersByTime(50);
     });
     expect(result.current.displayed).toBe("Hi");
+    expect(result.current.showCursor).toBe(true);
   });
 
   it("hides cursor after typing finishes and linger period elapses", () => {

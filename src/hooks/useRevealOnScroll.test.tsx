@@ -15,10 +15,19 @@ function TestComponent({ threshold }: { threshold?: number }) {
   );
 }
 
+interface MockIO {
+  _lastOptions: IntersectionObserverInit | undefined;
+  _callCount: number;
+}
+
 describe("useRevealOnScroll", () => {
   let observeCallback: IntersectionObserverCallback;
   const mockDisconnect = vi.fn();
   const mockObserve = vi.fn();
+
+  function getMockIO(): MockIO {
+    return IntersectionObserver as unknown as MockIO;
+  }
 
   beforeEach(() => {
     cleanup();
@@ -65,17 +74,15 @@ describe("useRevealOnScroll", () => {
 
   it("creates an IntersectionObserver with the given threshold", () => {
     render(<TestComponent threshold={0.25} />);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Mock = IntersectionObserver as any;
-    expect(Mock._callCount).toBe(1);
-    expect(Mock._lastOptions).toEqual({ threshold: 0.25 });
+    const mock = getMockIO();
+    expect(mock._callCount).toBe(1);
+    expect(mock._lastOptions).toEqual({ threshold: 0.25 });
   });
 
   it("uses default threshold of 0.15", () => {
     render(<TestComponent />);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Mock = IntersectionObserver as any;
-    expect(Mock._lastOptions).toEqual({ threshold: 0.15 });
+    const mock = getMockIO();
+    expect(mock._lastOptions).toEqual({ threshold: 0.15 });
   });
 
   it("observes the target element", () => {

@@ -108,10 +108,20 @@ describe("highlight", () => {
     expect(result).toContain("&lt;");
   });
 
-  it("handles code with no matching rules", () => {
-    const result = highlight("xyz", []);
-    // With no rules, everything is just escaped plain text
-    expect(result).toBe("xyz");
+  it("escapes HTML even with no matching rules", () => {
+    const result = highlight("x < y", []);
+    expect(result).toBe("x &lt; y");
+  });
+
+  it("highlights strings containing keywords as strings, not keywords", () => {
+    const result = highlight('"const"', JS_RULES);
+    // The entire "const" should be green (string), not mauve (keyword)
+    expect(result).toContain(`color:${C.green}`);
+    expect(result).not.toMatch(
+      new RegExp(
+        `color:${C.mauve.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^"]*const`,
+      ),
+    );
   });
 
   it("handles adjacent matches without gaps", () => {
