@@ -15,9 +15,10 @@
     "format:check": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
+    "test": "vitest run --project unit",
+    "test:watch": "vitest watch --project unit",
+    "test:coverage": "vitest run --project unit --coverage",
+    "test:storybook": "vitest run --project storybook"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
