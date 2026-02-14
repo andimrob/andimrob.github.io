@@ -45,28 +45,30 @@ const categoryColors: Record<string, string> = {
 function Experience() {
   return (
     <RevealSection id="experience">
-      <SectionHeading>Experience</SectionHeading>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {skills.map((group) => (
-          <div
-            key={group.category}
-            className="rounded-xl bg-gray-50 p-5 dark:bg-gray-900"
-          >
-            <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-              {group.category}
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <span
-                  key={item}
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${categoryColors[group.category]}`}
-                >
-                  {item}
-                </span>
-              ))}
+      <div className="scroll-mt-24">
+        <SectionHeading>Experience</SectionHeading>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {skills.map((group) => (
+            <div
+              key={group.category}
+              className="rounded-xl bg-gray-50 p-5 dark:bg-gray-900"
+            >
+              <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
+                {group.category}
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${categoryColors[group.category]}`}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </RevealSection>
   );

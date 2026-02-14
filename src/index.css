@@ -38,9 +38,9 @@
 }
 
 .prism {
-  --prism-h: 3.5rem;
+  --prism-h: auto;
   position: relative;
-  height: var(--prism-h);
+  min-height: var(--prism-h, 3.5rem);
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
 }
@@ -57,15 +57,42 @@
 }
 
 .prism-front {
-  transform: translateZ(calc(var(--prism-h) / 2));
+  transform: translateZ(calc(var(--prism-h, 3.5rem) / 2));
 }
 
 .prism-top {
-  transform: rotateX(90deg) translateZ(calc(var(--prism-h) / 2));
+  transform: rotateX(90deg) translateZ(calc(var(--prism-h, 3.5rem) / 2));
 }
 
 .prism-bottom {
-  transform: rotateX(-90deg) translateZ(calc(var(--prism-h) / 2));
+  transform: rotateX(-90deg) translateZ(calc(var(--prism-h, 3.5rem) / 2));
+}
+
+/* ---- Colorful Nav Underline ---- */
+
+.nav-underline-gradient {
+  background: linear-gradient(
+    90deg,
+    #ff71ce 0%,
+    #b967ff 25%,
+    #01cdfe 50%,
+    #05ffa1 75%,
+    #ff71ce 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ---- Top Face Background Treatments ---- */
