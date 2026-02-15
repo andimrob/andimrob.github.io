@@ -1,12 +1,13 @@
 import { useEffect, type RefObject } from "react";
 
-const MAX_TILT_X = 90;
-const MAX_TILT_Y = 45;
+const MAX_TILT_X = 45;
+const MAX_TILT_Y = 30;
 const ATTRACT_RANGE = 250;
 
 export function useMagneticTilt(
   ref: RefObject<HTMLElement | null>,
   disabled: boolean,
+  boundsRef?: RefObject<HTMLElement | null>,
 ): void {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -16,7 +17,8 @@ export function useMagneticTilt(
         return;
       }
 
-      const rect = el.getBoundingClientRect();
+      const boundsEl = boundsRef?.current ?? el;
+      const rect = boundsEl.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
@@ -26,6 +28,7 @@ export function useMagneticTilt(
 
       if (dist > ATTRACT_RANGE) {
         el.style.transform = "";
+        el.style.setProperty("--magnetic-strength", "0");
         return;
       }
 
@@ -34,10 +37,14 @@ export function useMagneticTilt(
       const tiltY = (dx / ATTRACT_RANGE) * MAX_TILT_Y * strength;
 
       el.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      el.style.setProperty("--magnetic-strength", String(strength));
     };
 
     const handleMouseLeave = () => {
-      if (ref.current) ref.current.style.transform = "";
+      if (ref.current) {
+        ref.current.style.transform = "";
+        ref.current.style.setProperty("--magnetic-strength", "0");
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -46,5 +53,5 @@ export function useMagneticTilt(
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [ref, disabled]);
+  }, [ref, disabled, boundsRef]);
 }

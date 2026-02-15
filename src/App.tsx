@@ -1,5 +1,4 @@
 import Sidebar from "./components/Sidebar";
-import MobileHeader from "./components/MobileHeader";
 import About from "./components/About";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
@@ -16,22 +15,23 @@ function App() {
   return (
     <>
       <CursorGlow xrayActive={xrayActive} getMousePosition={getMousePosition} />
-      <MobileHeader />
-      <div className="flex min-h-screen flex-col lg:flex-row">
-        {/* Left sticky sidebar (desktop) */}
-        <div className="hidden lg:block lg:w-1/2">
+      <a
+        href="#content"
+        className="absolute top-0 left-0 z-[100] -translate-y-full rounded bg-primary px-4 py-2 text-sm font-bold text-white focus-visible:translate-y-0"
+      >
+        Skip to Content
+      </a>
+      <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:py-0">
+        <div className="lg:flex lg:justify-between lg:gap-4">
           <Sidebar />
-        </div>
 
-        {/* Right scrollable content */}
-        <main className="flex-1 px-6 pt-24 pb-12 lg:w-1/2 lg:px-12 lg:py-24">
-          <div className="mx-auto max-w-2xl space-y-32">
+          <main id="content" className="pt-16 lg:w-[52%] lg:py-24">
             <About />
             <Experience />
             <Projects />
-          </div>
-          <Footer />
-        </main>
+            <Footer />
+          </main>
+        </div>
       </div>
       {xrayActive && sourceHTML && (
         <XRayOverlay
