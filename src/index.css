@@ -38,7 +38,7 @@
 }
 
 .prism {
-  --prism-h: 3.5rem;
+  --prism-h: 4.25rem;
   position: relative;
   height: var(--prism-h);
   transform-style: preserve-3d;
@@ -57,15 +57,80 @@
 }
 
 .prism-front {
-  transform: translateZ(calc(var(--prism-h) / 2));
+  transform: translateZ(calc(var(--prism-h, 3.75rem) / 2));
 }
 
 .prism-top {
-  transform: rotateX(90deg) translateZ(calc(var(--prism-h) / 2));
+  transform: rotateX(90deg) translateZ(calc(var(--prism-h, 3.75rem) / 2));
 }
 
 .prism-bottom {
-  transform: rotateX(-90deg) translateZ(calc(var(--prism-h) / 2));
+  transform: rotateX(-90deg) translateZ(calc(var(--prism-h, 3.75rem) / 2));
+}
+
+.prism-side {
+  position: absolute;
+  top: 0;
+  width: var(--prism-h);
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.prism-left {
+  left: 0;
+  transform: translateX(calc(var(--prism-h) / -2)) rotateY(-90deg);
+}
+
+.prism-right {
+  right: 0;
+  transform: translateX(calc(var(--prism-h) / 2)) rotateY(90deg);
+}
+
+.prism-side-glow {
+  --s: var(--magnetic-strength, 0);
+  border: 1px solid rgba(209, 213, 219, calc(var(--s) * 0.8));
+}
+
+:is(.dark) .prism-side-glow {
+  border-color: rgba(55, 65, 81, calc(var(--s) * 0.8));
+}
+
+.prism-front-glow {
+  --s: var(--magnetic-strength, 0);
+  border: 1px solid rgba(209, 213, 219, calc(var(--s) * 0.8));
+  box-shadow: 0 8px 30px rgba(0, 0, 0, calc(var(--s) * 0.1));
+}
+
+:is(.dark) .prism-front-glow {
+  border-color: rgba(55, 65, 81, calc(var(--s) * 0.8));
+  box-shadow: 0 8px 30px rgba(255, 255, 255, calc(var(--s) * 0.04));
+}
+
+/* ---- Colorful Nav Underline ---- */
+
+.nav-underline-gradient {
+  background: linear-gradient(
+    90deg,
+    #ff71ce 0%,
+    #b967ff 25%,
+    #01cdfe 50%,
+    #05ffa1 75%,
+    #ff71ce 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ---- Top Face Background Treatments ---- */
@@ -209,7 +274,7 @@
 /* ---- Hero Tagline ---- */
 
 .hero-tagline {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #334155;
@@ -227,7 +292,7 @@
 
 @media (max-width: 640px) {
   .hero-tagline {
-    font-size: 1.125rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -255,7 +320,6 @@
   content: "|";
   animation: blink-caret 0.6s step-end infinite;
   margin-left: 1px;
-  position: absolute;
 }
 
 /* ---- Nav Jitter ---- */
