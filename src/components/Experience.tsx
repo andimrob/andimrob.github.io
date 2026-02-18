@@ -1,6 +1,20 @@
 import RevealSection from "./RevealSection";
 import SectionHeading from "./SectionHeading";
 
+const categoryEmojis: Record<string, string> = {
+  Frontend: "🎨",
+  Backend: "⚙️",
+  "Tools & DevOps": "🛠️",
+  Practices: "📐",
+};
+
+const categoryBorders: Record<string, string> = {
+  Frontend: "border-l-blue-500",
+  Backend: "border-l-emerald-500",
+  "Tools & DevOps": "border-l-amber-500",
+  Practices: "border-l-purple-500",
+};
+
 const skills = [
   { category: "Frontend", items: ["React", "TypeScript", "HTML/CSS", "Vite"] },
   {
@@ -47,19 +61,24 @@ function Experience() {
     <RevealSection id="experience">
       <SectionHeading>Experience</SectionHeading>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {skills.map((group) => (
+        {skills.map((group, groupIdx) => (
           <div
             key={group.category}
-            className="rounded-xl bg-gray-50 p-5 dark:bg-gray-900"
+            className={`glass-card border-l-4 p-5 transition-all duration-200 hover:scale-[1.02] stagger-child ${categoryBorders[group.category]}`}
+            style={{ animationDelay: `${groupIdx * 80}ms` }}
           >
             <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
+              <span className="mr-1.5" aria-hidden="true">
+                {categoryEmojis[group.category]}
+              </span>
               {group.category}
             </h4>
             <div className="flex flex-wrap gap-2">
-              {group.items.map((item) => (
+              {group.items.map((item, i) => (
                 <span
                   key={item}
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${categoryColors[group.category]}`}
+                  className={`stagger-child rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${categoryColors[group.category]}`}
+                  style={{ animationDelay: `${i * 80}ms` }}
                 >
                   {item}
                 </span>

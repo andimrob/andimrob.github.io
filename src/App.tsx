@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import Hero from "./components/Hero";
+import Sidebar from "./components/Sidebar";
 import About from "./components/About";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
@@ -17,13 +17,15 @@ function App() {
     <>
       <CursorGlow xrayActive={xrayActive} getMousePosition={getMousePosition} />
       <Header />
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-      </main>
-      <Footer />
+      <div className="mx-auto max-w-screen-xl lg:flex">
+        <Sidebar />
+        <main className="pt-24 lg:w-1/2 lg:pt-20">
+          <About />
+          <Experience />
+          <Projects />
+          <Footer />
+        </main>
+      </div>
       {xrayActive && sourceHTML && (
         <XRayOverlay
           sourceHTML={sourceHTML}

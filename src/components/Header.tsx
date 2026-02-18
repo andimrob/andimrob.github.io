@@ -56,7 +56,7 @@ function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-8 sm:pt-6">
       <div
-        className={`prism-perspective mx-auto max-w-4xl ${jitter ? "prism-jitter" : ""}`}
+        className={`prism-perspective mx-auto max-w-4xl lg:mx-0 lg:ml-auto lg:max-w-none lg:w-14 ${jitter ? "prism-jitter" : ""}`}
         onAnimationEnd={() => setJitter(false)}
       >
         <div
@@ -66,13 +66,13 @@ function Header() {
         >
           {/* Front Face */}
           <div
-            className="prism-face prism-front grid cursor-pointer grid-cols-[1fr_auto_1fr] items-center bg-white px-3 shadow-2xl sm:px-6 dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
+            className="prism-face prism-front grid cursor-pointer grid-cols-[1fr_auto_1fr] items-center bg-white px-3 shadow-2xl sm:px-6 lg:flex lg:justify-center lg:px-0 dark:bg-gray-950 dark:border dark:border-gray-800 dark:shadow-[0_8px_30px_rgba(255,255,255,0.04)]"
             onClick={handleFlip}
           >
-            <div />
+            <div className="lg:hidden" />
 
-            {/* Centered nav links */}
-            <nav ref={navRef} className="relative flex items-center gap-6">
+            {/* Centered nav links — mobile/tablet only */}
+            <nav ref={navRef} className="relative flex items-center gap-6 lg:hidden">
               {sections.map((s) => (
                 <a
                   key={s.id}
@@ -98,8 +98,8 @@ function Header() {
               />
             </nav>
 
-            {/* Theme toggle */}
-            <div className="flex justify-end pl-6">
+            {/* Theme toggle — mobile/tablet only (desktop has it in Sidebar) */}
+            <div className="flex justify-end pl-6 lg:hidden">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
