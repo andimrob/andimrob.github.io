@@ -2,6 +2,7 @@
 
 **Branch**: `feat/visual-redesign`
 **Aesthetic**: "Arcade Cabinet Meets Editorial"
+**Plan**: `.claude/projects/-Users-robblakey-src-andimrob-github-io/0d3559b2-1e72-41a5-bdea-6b871d3c8bd3.jsonl`
 
 ---
 
