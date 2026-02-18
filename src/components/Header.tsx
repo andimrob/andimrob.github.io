@@ -81,7 +81,7 @@ function Header() {
                   }}
                   href={`#${s.id}`}
                   onClick={(e) => e.stopPropagation()}
-                  className={`pb-1 text-sm font-medium transition-colors ${
+                  className={`pb-1 font-heading text-sm font-medium transition-colors ${
                     active === s.id
                       ? "text-gray-900 dark:text-white"
                       : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"

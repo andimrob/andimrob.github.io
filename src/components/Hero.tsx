@@ -42,7 +42,7 @@ function Hero() {
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-12 md:flex-row md:items-center md:justify-between">
         {/* Left column — name, tagline, social links */}
         <div className="text-center md:text-left">
-          <h1 className="relative inline-block text-left text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <h1 className="relative inline-block text-left font-heading text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             <span className="invisible" aria-hidden="true">
               {fullName}
             </span>
