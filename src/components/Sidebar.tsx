@@ -59,15 +59,10 @@ function Sidebar() {
           <ul className="w-max space-y-5">
             {sections.map((s) => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="group flex items-center gap-4">
+                <a href={`#${s.id}`} className="group">
                   <span
-                    className={`nav-indicator h-px bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 ${
-                      active === s.id ? "nav-indicator-active bg-slate-200" : ""
-                    }`}
-                  />
-                  <span
-                    className={`text-xs font-bold uppercase tracking-widest transition-colors group-hover:text-slate-200 ${
-                      active === s.id ? "text-slate-200" : "text-slate-500"
+                    className={`nav-underline text-xs font-bold uppercase tracking-widest transition-colors group-hover:text-slate-200 ${
+                      active === s.id ? "nav-underline-active text-slate-200" : "text-slate-500"
                     }`}
                   >
                     {s.label}
