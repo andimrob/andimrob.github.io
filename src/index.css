@@ -34,7 +34,14 @@
 
 .nav-underline {
   position: relative;
-  padding-bottom: 3px;
+  padding-bottom: 4px;
+  font-size: 0.75rem;
+  transition: font-size 0.25s ease;
+}
+
+.nav-underline:hover,
+.nav-underline-active {
+  font-size: 0.875rem;
 }
 
 .nav-underline::after {
