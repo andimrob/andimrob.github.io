@@ -45,12 +45,7 @@ function CursorGlow({ xrayActive, getMousePosition }: CursorGlowProps) {
     };
   }, [xrayActive, getMousePosition]);
 
-  return (
-    <div
-      ref={ref}
-      className="pointer-events-none fixed inset-0 z-40 hidden dark:block"
-    />
-  );
+  return <div ref={ref} className="pointer-events-none fixed inset-0 z-40" />;
 }
 
 export default CursorGlow;
