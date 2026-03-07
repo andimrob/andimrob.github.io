@@ -2,7 +2,7 @@ import { tagColorClass } from "../tagColors";
 
 const experiences = [
   {
-    dateRange: "Jul 2025 — Present",
+    dateRange: "2025 — Present",
     title: "Staff Software Engineer",
     company: "Betterment",
     description:
@@ -10,7 +10,7 @@ const experiences = [
     tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
   },
   {
-    dateRange: "Jan 2023 — Aug 2025",
+    dateRange: "2023 — 2025",
     title: "Senior Software Engineer",
     company: "Betterment",
     description:
@@ -18,7 +18,7 @@ const experiences = [
     tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
   },
   {
-    dateRange: "Feb 2021 — Jan 2023",
+    dateRange: "2021 — 2023",
     title: "Engineering Manager",
     company: "Betterment",
     description:
@@ -26,7 +26,7 @@ const experiences = [
     tags: [],
   },
   {
-    dateRange: "Aug 2018 — Feb 2021",
+    dateRange: "2018 — 2021",
     title: "Software Engineer",
     company: "Betterment",
     description:
@@ -34,7 +34,7 @@ const experiences = [
     tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
   },
   {
-    dateRange: "Jun 2015 — Aug 2018",
+    dateRange: "2015 — 2018",
     title: "Software Engineer",
     company: "Upright (Fund That Flip)",
     description:
@@ -42,7 +42,7 @@ const experiences = [
     tags: ["Ruby on Rails", "React", "PostgreSQL", "REST APIs", "AWS", "Heroku", "CI/CD"],
   },
   {
-    dateRange: "Jul 2010 — Oct 2013",
+    dateRange: "2010 — 2013",
     title: "Enterprise Site Engineer",
     company: "JPMorgan Chase",
     description:
