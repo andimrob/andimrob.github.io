@@ -14,15 +14,19 @@ const tagCategories: Record<string, TagCategory> = {
   Ruby: "backend",
   Go: "backend",
   GraphQL: "backend",
+  "REST APIs": "backend",
   CLI: "backend",
   "Open Source": "backend",
   // Data
   PostgreSQL: "data",
   // Platform
   AWS: "platform",
+  Heroku: "platform",
   Docker: "platform",
   "CI/CD": "platform",
   Git: "platform",
+  Networking: "platform",
+  Linux: "platform",
 };
 
 const categoryColors: Record<TagCategory, string> = {

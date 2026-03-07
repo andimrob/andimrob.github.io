@@ -2,28 +2,52 @@ import { tagColorClass } from "../tagColors";
 
 const experiences = [
   {
-    dateRange: "2022 — Present",
-    title: "Senior Software Engineer",
-    company: "Acme Corp",
+    dateRange: "Jul 2025 — Present",
+    title: "Staff Software Engineer",
+    company: "Betterment",
     description:
-      "Build and maintain critical internal tools and customer-facing features. Lead cross-functional initiatives to improve developer experience and system reliability.",
+      "",
     tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
   },
   {
-    dateRange: "2019 — 2022",
-    title: "Software Engineer",
-    company: "TechStart Inc.",
+    dateRange: "Jan 2023 — Aug 2025",
+    title: "Senior Software Engineer",
+    company: "Betterment",
     description:
-      "Developed full-stack web applications from concept to deployment. Collaborated closely with product and design teams to ship iterative improvements.",
-    tags: ["React", "Node.js", "GraphQL", "Docker", "CI/CD"],
+      "",
+    tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
   },
   {
-    dateRange: "2017 — 2019",
-    title: "Junior Developer",
-    company: "WebWorks Agency",
+    dateRange: "Feb 2021 — Jan 2023",
+    title: "Engineering Manager",
+    company: "Betterment",
     description:
-      "Built responsive client websites and internal tooling. Gained deep expertise in frontend frameworks and modern CSS techniques.",
-    tags: ["JavaScript", "HTML/CSS", "Ruby", "Git"],
+      "",
+    tags: [],
+  },
+  {
+    dateRange: "Aug 2018 — Feb 2021",
+    title: "Software Engineer",
+    company: "Betterment",
+    description:
+      "",
+    tags: ["React", "TypeScript", "Ruby on Rails", "PostgreSQL", "AWS"],
+  },
+  {
+    dateRange: "Jun 2015 — Aug 2018",
+    title: "Software Engineer",
+    company: "Upright (Fund That Flip)",
+    description:
+      "Founding engineer on the tech team for a technology-enabled investment platform providing access to single family residential real estate investment opportunities. Built out from an MVP by crafting custom UI components, optimizing database design, creating internal tools for business operations, and adding vendor integrations.",
+    tags: ["Ruby on Rails", "React", "PostgreSQL", "REST APIs", "AWS", "Heroku", "CI/CD"],
+  },
+  {
+    dateRange: "Jul 2010 — Oct 2013",
+    title: "Enterprise Site Engineer",
+    company: "JPMorgan Chase",
+    description:
+      "Data center engineering supporting 3 sites. Installation, configuration, and maintenance of servers, networking, and other data center equipment in a 24/7 on-call capacity. Auditing and monitoring for performance and early-detection of failure.",
+    tags: ["Networking", "Linux"],
   },
 ];
 
