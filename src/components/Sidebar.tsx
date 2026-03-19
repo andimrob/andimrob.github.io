@@ -56,13 +56,18 @@ function Sidebar() {
         </p>
 
         <nav className="mt-16 hidden lg:block" aria-label="In-page jump links">
-          <ul className="w-max space-y-5">
+          <ul className="w-max space-y-6">
             {sections.map((s) => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="group">
+                <a href={`#${s.id}`} className="group flex items-center gap-4">
                   <span
-                    className={`nav-underline text-xs font-bold uppercase tracking-widest transition-colors group-hover:text-slate-200 ${
-                      active === s.id ? "nav-underline-active text-slate-200" : "text-slate-500"
+                    className={`h-px transition-all ${
+                      active === s.id ? "w-16 bg-slate-200" : "w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200"
+                    }`}
+                  />
+                  <span
+                    className={`text-xs font-bold uppercase tracking-widest transition-colors ${
+                      active === s.id ? "text-slate-200" : "text-slate-500 group-hover:text-slate-200"
                     }`}
                   >
                     {s.label}

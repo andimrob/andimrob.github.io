@@ -31,31 +31,3 @@
 }
 
 /* ---- Section Nav Active Indicator ---- */
-
-.nav-underline {
-  position: relative;
-  padding-bottom: 4px;
-  font-size: 0.75rem;
-  transition: font-size 0.25s ease;
-}
-
-.nav-underline:hover,
-.nav-underline-active {
-  font-size: 0.875rem;
-}
-
-.nav-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 0;
-  background-color: currentColor;
-  transition: width 0.25s ease;
-}
-
-.nav-underline:hover::after,
-.nav-underline-active::after {
-  width: 100%;
-}
