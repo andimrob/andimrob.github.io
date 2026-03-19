@@ -61,6 +61,9 @@ public
 tsconfig.tsbuildinfo
 storybook-static/
 
+# Claude plans
+.claude/plans/
+
 # Mac files
 .DS_Store
 
